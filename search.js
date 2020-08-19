@@ -83,6 +83,10 @@ function forwardGeocoder(query) {
 }
 
 function createListItems(filterData) {
+    if(isMainPage){
+        return;
+    }
+
     var docFrag = document.createDocumentFragment();
 
     // create a list of items

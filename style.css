@@ -163,8 +163,8 @@ body {
 }
 /* helper styles */
 .img-logo {
-    height: 30px;
-    width: 30px;
+    height: 6vh;
+    mix-blend-mode: screen;
 }
 
 
