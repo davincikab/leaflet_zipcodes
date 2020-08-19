@@ -97,7 +97,7 @@ body {
     max-height: 30vh;
     position: absolute !important;
     background-color: var(--white);
-    box-shadow: 2px 2px 0.1em #ddd;
+    box-shadow: 2px 2px 0.9em #ddd;
     overflow-y: auto;
 }
 
@@ -167,6 +167,10 @@ body {
     mix-blend-mode: screen;
 }
 
+.btn-cust {
+    background-color: var(--secondary);
+    color: white;
+}
 
 
 /* Media Queries */

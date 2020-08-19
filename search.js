@@ -39,6 +39,10 @@ function convertToGeoJson(csvData) {
       }, function (err, data) {
           console.log(data);
           searchData = data.features;
+
+        if(isMainPage){
+            return;
+        }
           createListItems(data.features);
       }
     );
@@ -74,7 +78,9 @@ function forwardGeocoder(query) {
     console.log(filterData);
 
     if(filterData.length == 0) {
-        result.innerHTML = '<small class="text-center"><b>No result found<b></small>';
+        result.innerHTML = '<div class="py-3 px-1 text-center"><small class="text-center"><b>No result found</b></small><br>'+
+                '<a class="btn btn-cust mr-3" href="">Add Your Business</a><small> '+
+                'No Partners in Your Area ? </small><a href="" class="">About</a></div>'
         return;
     }
 
@@ -83,10 +89,6 @@ function forwardGeocoder(query) {
 }
 
 function createListItems(filterData) {
-    if(isMainPage){
-        return;
-    }
-
     var docFrag = document.createDocumentFragment();
 
     // create a list of items
@@ -117,6 +119,11 @@ function flyToMarker(e) {
     let coordinates = coordinate.split(',').map(coord => parseFloat(coord));
 
     console.log(coordinates);
+    
+    if(isMainPage){
+        result.innerHTML = '';
+    }
+
     // update the input element
     searchBar.value = this.innerText;
 
