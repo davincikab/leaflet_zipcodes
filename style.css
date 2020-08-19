@@ -49,7 +49,51 @@ body {
 
 /* Search section */
 .section-links {
-    
+   padding:  2em 1em;
+   max-width: 1080px;
+   margin: 0 auto;
+}
+
+.search-tab {
+    background-color: var(--white);
+    padding:0.5em 0.4em;
+    box-shadow: 2px 2px 0.1em #ddd;
+}
+
+.search-tab > h3 {
+    font-size: 1.2rem;
+}
+
+.links {
+    margin-top: 1.5em;
+}
+
+.custom-link {
+    background-color: var(--white);
+    /* padding:0.5em 0.8em; */
+    display: flex;
+    justify-content: space-between;
+    margin: 0.5em 0.6em;
+    font-size: 1.1rem;
+    text-decoration: none;
+    border-radius: 8px;
+    box-shadow: 2px 2px 0.1em #ddd;
+}
+
+.custom-link:focus {
+    text-decoration: none;
+    background-color: var(--primary);
+    color:white;
+}
+
+.custom-link-span {
+    border-right: 1px;
+    border-top: 0px;
+    border-bottom: 0px;
+    border-left: 0px;
+    border-style: solid;
+    border-color: var(--primary);
+    width: 15%;
 }
 
 /* helper styles */
