@@ -1,0 +1,66 @@
+:root {
+    --primary: #120D43;
+    --secondary: #178BF6;
+    --tertiary: #DBBA24;
+    --white:#fff;
+}
+
+body {
+    box-sizing: border-box;
+    margin: 0;
+    font-size: calc(0.8em + 1vh);
+}
+
+
+/* Main section */
+.main {
+    position: absolute;
+    z-index: 1;
+    width: 100vw;
+}
+
+.navbar {
+    background-color: var(--primary);
+    padding: 0.3em 1em;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-nav {
+    list-style: none;
+    margin: 0px;
+}
+
+.navbar-nav > li {
+    list-style-type: none;
+}
+
+.navbar-nav > li > a {
+    text-decoration:none;
+    color:var(--white);
+}
+
+#map {
+    width:100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 0;
+}
+
+/* Search section */
+.section-links {
+    
+}
+
+/* helper styles */
+.img-logo {
+    height: 30px;
+    width: 30px;
+}
+
+
+
+/* Media Queries */
+@media (max-width:50em) {
+
+}
