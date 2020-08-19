@@ -67,7 +67,7 @@ function createListItems(filterData) {
         var list = document.createElement('li');
         list.className = 'address list-group-item';
 
-        list.setAttribute('data-coord', data.fields.coordinates);
+        list.setAttribute('data-coord', data.fields.coordinates.reverse());
         list.setAttribute('data-type', 'city');
         list.setAttribute('data-title', data.fields.city);
 
@@ -93,13 +93,17 @@ function flyToMarker(e) {
     // update the input element
     searchBar.value = this.innerText;
 
-    map.flyTo(coordinates);
+    map.flyTo({
+        center:coordinates
+    });
 
     // add a marker
     if(locationMarker) {
-        locationMarker.setLatLng(coordinates);
+        locationMarker.setLngLat(coordinates);
         return;
     }
 
-    locationMarker = L.marker(coordinates).addTo(map);
+    locationMarker = new mapboxgl.Marker()
+        .setLngLat(coordinates)
+        .addTo(map);
 }
