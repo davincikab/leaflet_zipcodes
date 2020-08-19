@@ -6,22 +6,43 @@ var locationMarker;
 
 // load data
 function loadCitiesData() {
-    fetch('usa.json')
-    .then(res => res.json())
-    .then(response => {
-        searchData = response;
+    // fetch('usa.json')
+    // .then(res => res.json())
+    // .then(response => {
+    //     searchData = response;
 
-        if(!isMainPage){
-            createListItems(searchData);
-        }
+    //     if(!isMainPage){
+    //         createListItems(searchData);
+    //     }
        
-    })
-    .catch(error => {
-        console.log(error);
-    });
+    // })
+    // .catch(error => {
+    //     console.log(error);
+    // });
+
+    d3.csv('data.csv')
+        .then(data => {
+            console.log(data);
+
+            convertToGeoJson(data);
+        });
+
 }
 
 loadCitiesData();
+
+function convertToGeoJson(csvData) {
+    csv2geojson.csv2geojson(csvData, {
+        latfield: 'lat',
+        lonfield: 'lng',
+        delimiter: ','
+      }, function (err, data) {
+          console.log(data);
+          searchData = data.features;
+          createListItems(data.features);
+      }
+    );
+}
 
 // Search bar event listener
 searchBar.addEventListener('input', function(e) {
@@ -32,7 +53,9 @@ searchBar.addEventListener('input', function(e) {
 function forwardGeocoder(query) {
     // clear the results tab if it contains
     if(query == '' || query.length < 2){
-        result.innerHTML = '';
+        // result.innerHTML = '';
+
+        createListItems(searchData);
         return;
     }
 
@@ -40,7 +63,7 @@ function forwardGeocoder(query) {
 
     filterData = filterData.filter(item => {
         if(
-            item.fields.city
+            item.properties.name
             .toLowerCase()
             .includes(query.toLowerCase())
         ) { 
@@ -67,11 +90,11 @@ function createListItems(filterData) {
         var list = document.createElement('li');
         list.className = 'address list-group-item';
 
-        list.setAttribute('data-coord', data.fields.coordinates.reverse());
+        list.setAttribute('data-coord', data.geometry.coordinates);
         list.setAttribute('data-type', 'city');
-        list.setAttribute('data-title', data.fields.city);
+        list.setAttribute('data-title', data.properties.name);
 
-        list.innerHTML = data.fields.city + ', '+ '<small>'+data.fields.state;+'</small>';
+        list.innerHTML = data.properties.name;
 
         list.addEventListener('click',flyToMarker);
 
