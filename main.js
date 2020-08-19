@@ -1,3 +1,5 @@
+var isMainPage = true;
+
 // Creating map object
 var map = L.map("map", {
     center: [39.2832938689385, -99.25048828125],

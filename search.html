@@ -26,7 +26,8 @@
                       </span>
                     </div>
     
-                    <input type="text" class="form-control" aria-label="Location" id="location-bar">
+                    <input type="text" class="form-control" 
+                        aria-label="Location" id="location-bar" placeholder="Business Address, ZipCode ....">
                     <div class="input-group-append">
                       <span class="input-group-text">
                           <i class="fa fa-search"></i>
@@ -43,7 +44,9 @@
         </div>
 
     <script>
-            // Creating map object
+        var isMainPage = false;
+
+        // Creating map object
         var map = L.map("map", {
             center: [39.2832938689385, -99.25048828125],
             zoom: 5,

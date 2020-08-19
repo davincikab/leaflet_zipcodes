@@ -11,7 +11,10 @@ function loadCitiesData() {
     .then(response => {
         searchData = response;
 
-        createListItems(searchData);
+        if(!isMainPage){
+            createListItems(searchData);
+        }
+       
     })
     .catch(error => {
         console.log(error);
@@ -35,11 +38,6 @@ function forwardGeocoder(query) {
 
     filterData = searchData;
 
-    if(filterData.length == 0) {
-        result.innerHTML = '<small><b>No result found<b></small>';
-        return;
-    }
-
     filterData = filterData.filter(item => {
         if(
             item.fields.city
@@ -51,6 +49,11 @@ function forwardGeocoder(query) {
     });
 
     console.log(filterData);
+
+    if(filterData.length == 0) {
+        result.innerHTML = '<small class="text-center"><b>No result found<b></small>';
+        return;
+    }
 
     // 
     createListItems(JSON.parse(JSON.stringify(filterData)));
@@ -87,6 +90,8 @@ function flyToMarker(e) {
     let coordinates = coordinate.split(',').map(coord => parseFloat(coord));
 
     console.log(coordinates);
+    // update the input element
+    searchBar.value = this.innerText;
 
     map.flyTo(coordinates);
 
