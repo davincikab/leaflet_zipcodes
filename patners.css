@@ -3,6 +3,7 @@
     --secondary: #178BF6;
     --tertiary: #DBBA24;
     --white:#fff;
+    --black:#181818;
 }
 
 body {
@@ -37,7 +38,12 @@ body {
     font-size: 0.9rem;
     height: 20vh;
     margin-bottom: 1em;
-    padding:2px;
+    padding: 0.5em 0.8em;
+    border-radius: 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
 }
 
 .item {
@@ -46,7 +52,15 @@ body {
 .item > span {
     font-weight: 600;
 }
+
+.link {
+    color: var(--black);
+}
 /* helper styles */
+.img {
+    height: 6vh;
+    margin-right: 1em;
+}
 .img-logo {
     height: 6vh;
     mix-blend-mode: screen;

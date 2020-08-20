@@ -36,7 +36,7 @@ body {
     height: 50vh;
     overflow: auto;
     border-radius: 1em;
-    background-color: var(--white);
+    /* background-color: var(--white); */
     /* border-top-left-radius: 2em;
     border-top-right-radius: 2em; */
 }
@@ -69,10 +69,39 @@ body {
     border-right-width: 0px;
 }
 
+.list-group {
+    border-radius: 0.4em;
+}
+
 .list-group-item {
     font-size: 0.95rem;
 }
 
+.mapboxgl-ctrl-logo {
+    display: none !important
+}
+
+.img {
+    height: 6vh;
+}
+
+.list-group > .card-header {
+    padding: .2rem 1.25rem;
+    margin-bottom: 0;
+    background-color: #ececec;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+    text-align: center;
+    font-size: 1rem;
+}
+
+.empty-result {
+    background-color: var(--white);
+}
+
+.btn-cust {
+    background-color: var(--secondary);
+    color: white;
+}
 /* Media Queries */
 @media (min-width:50em) {
     body {

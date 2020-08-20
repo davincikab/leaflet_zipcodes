@@ -45,10 +45,11 @@
         function createCards(data) {
             data.forEach(bus => {
                 patners.innerHTML += "<div class='col-md-4'><div class='card'>"+
-                    "<b>"+bus.name +"</b><br>"+
-                    "<p class='item'><span>Phone Number </span> "+bus.phone_number+"</p>"+
-                    "<p class='item'><span> Address   </span>"+bus.address+"</p>"+
-                    "</div><div>";
+                    "<div><img src='images/gsn.logostamp_blue.png' class='img'></div><div>"+
+                    "<a class='link' href='#'><b>"+bus.name +"</b></a><br>"+
+                    "<p class='item'><span></span> "+bus.phone_number+"</p>"+
+                    "<p class='item'><span></span>"+bus.address+"</p></div>"+
+                    "</div></div>";
             });
         }
     </script>

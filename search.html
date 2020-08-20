@@ -34,10 +34,8 @@
             </div>
 
             <div class="map" id="map"></div>
-            <div class="side-section">
+            <div class="side-section" id="side-section">
                 <!-- <span>Results</span> -->
-                <ul class="list-group list-group-flush" id="result">
-                </ul>
             </div>
         </div>
 
@@ -48,12 +46,12 @@
 
         var map = new mapboxgl.Map({
             container: 'map',
-            style: 'mapbox://styles/bennytrovato/ckdxg3sfd0s211al15hakjjlf', 
+            style:'mapbox://styles/mapbox/streets-v11', 
             center: [-96.6062800476281,  40.19020391149792],
             zoom: 3,
         });
 
-
+        // create a mapbox control
     </script>
     <script src="search.js"></script>
 </body>
