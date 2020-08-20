@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patners</title>
+    <title>About</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="patners.css">
     <script src="https://d3js.org/d3.v5.min.js"></script>
@@ -23,34 +23,5 @@
             </li>
         </ul>
     </nav>
-
-    <div class="container">
-        <div class="row mt-3" id="patners">
-         
-        </div>
-    </div>
-   
-
-    <script>
-        let patners = document.getElementById("patners");
-
-        d3.csv('data.csv')
-        .then(data => {
-            console.log(data);
-
-            createCards(data);
-        });
-
-        // 
-        function createCards(data) {
-            data.forEach(bus => {
-                patners.innerHTML += "<div class='col-md-4'><div class='card'>"+
-                    "<b>"+bus.name +"</b><br>"+
-                    "<p class='item'><span>Phone Number </span> "+bus.phone_number+"</p>"+
-                    "<p class='item'><span> Address   </span>"+bus.address+"</p>"+
-                    "</div><div>";
-            });
-        }
-    </script>
 </body>
 </html>

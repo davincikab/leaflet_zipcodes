@@ -59,6 +59,12 @@ function forwardGeocoder(query) {
     if(query == '' || query.length < 2){
         // result.innerHTML = '';
 
+        if(isMainPage) {
+            result.innerHTML = '';
+
+            return;
+        }
+
         createListItems(searchData);
         return;
     }
