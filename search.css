@@ -3,7 +3,7 @@
     --secondary: #178BF6;
     --tertiary: #DBBA24;
     --white:#fff;
-    --gray:#d4dbe0;
+    --gray:#f7f8f9;
 }
 
 body {
@@ -72,7 +72,8 @@ body {
 }
 
 .list-group {
-    border-radius: 0.4em;
+    border-radius: 1em;
+    overflow: auto;
 }
 
 .list-group-item {
@@ -90,8 +91,8 @@ body {
 .list-group > .card-header {
     padding: .2rem 1.25rem;
     margin-bottom: 0;
-    background-color: #ececec;
-    border-bottom: 1px solid rgba(0,0,0,.125);
+    background-color: rgba(0, 0, 0, 0.03);
+    border-bottom: 0px solid rgba(0,0,0,.125);
     text-align: center;
     font-size: 1rem;
 }

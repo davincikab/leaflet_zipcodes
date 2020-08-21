@@ -42,7 +42,7 @@ body {
 
 .card {
     font-size: 0.9rem;
-    /* height: 20vh; */
+    overflow: auto;
     margin-bottom: 1em;
     padding: 0em;
     border-radius: 8px;
