@@ -188,7 +188,8 @@ function flyToMarker(e) {
     searchBar.value = this.innerText;
 
     map.flyTo({
-        center:coordinates
+        center:coordinates,
+        zoom:12
     });
 
     // add a marker
