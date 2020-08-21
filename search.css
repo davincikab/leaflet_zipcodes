@@ -87,6 +87,7 @@ body {
 
 .img {
     height: 6vh;
+    margin-right: 1em;
 }
 
 .list-group > .card-header {
@@ -106,6 +107,102 @@ body {
     background-color: var(--secondary);
     color: white;
 }
+
+.mapboxgl-ctrl-bottom-left {
+    bottom: 0;
+    left: 0% !important;
+}
+
+.mapboxgl-ctrl-group {
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border:0px;
+    background-color: transparent;
+}
+
+.mapboxgl-ctrl-group > button {
+    margin: 1em;
+    border-radius: 50%;
+    background-color: white;
+}
+
+/* popup */
+.card {
+    font-size: 0.9rem;
+    overflow: auto;
+    margin-bottom: 1em;
+    padding: 0em;
+    border:0px;
+    border-radius: 0px;
+    box-shadow: none
+}
+
+.card-content {
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: center;
+    flex-direction: row;
+}
+
+.card-h {
+    border-bottom: 1px;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    border-style: solid;
+    border-color: var(--gray);
+    padding: 0.2em 0.5em;
+    margin: 0.2em 0.8em;
+}
+
+.card-h > p {
+    margin-left: 4em;
+    margin-bottom:0;
+    color:var(--primary-light);
+}
+
+.card-title-section {
+    padding-top: 1em;
+}
+
+.card-info {
+    padding: 0.2em 1em;
+}
+
+.item {
+    margin:0;
+}
+
+.item > span {
+    font-weight: 600;
+}
+
+.link {
+    color: var(--black);
+}
+
+.mapboxgl-popup-close-button {
+    z-index: 1;
+    font-size: 1rem;
+}
+
+.mapboxgl-popup-content {
+    padding:0px !important;
+    width: 300px;
+    border-radius: 1em;
+    overflow: auto;
+}
+
+.geolocate {
+    background-color: white;
+    padding: 0.4em 0.7em;
+    border-radius: 50px;
+    display: flex;
+    justify-content: space-around;
+    margin: 0.7rem 0px;
+    font-size: 1rem;
+}
+
 /* Media Queries */
 @media (min-width:50em) {
     body {
@@ -140,12 +237,17 @@ body {
     }
 
     .side-section {
-        top: 10%;
+        top: 16%;
         left: 1%;
         width: 28%;
         height: 89vh;
         padding:0px;
         z-index: 1;
         background-color: transparent;
+    }
+    
+    .mapboxgl-ctrl-bottom-left {
+        bottom: 0;
+        left: 30% !important;
     }
 }

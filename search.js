@@ -4,6 +4,7 @@ var sideSection = document.getElementById('side-section');
 var filterData;
 var searchData;
 var locationMarker;
+var popup = new mapboxgl.Popup({anchor:"top", closeOnMove:false, closeOnClick:false})
 
 // load data
 function loadCitiesData() {
@@ -196,14 +197,37 @@ function flyToMarker(e) {
     });
 
     // add a marker
-    if(locationMarker) {
-        locationMarker.setLngLat(coordinates);
-        return;
-    }
+    // if(locationMarker) {
+    //     locationMarker.setLngLat(coordinates);
+    //     return;
+    // }
 
     locationMarker = new mapboxgl.Marker()
         .setLngLat(coordinates)
         .addTo(map);
+
+    let title = this.getAttribute("data-title");
+    let bus = searchData.find(feature =>  feature.properties.name == title);
+
+    console.log(bus);
+    bus = bus.properties;
+
+    let content = "<div class=''><div class='card'>"+
+    "<div class='card-h'><div class='card-content'> <img src='images/gsn.logostamp_blue.png' class='img'>"+
+    "<div class='card-title-section' ><a class='link' href='"+bus.link+"'><b>"+bus.name +"</b></a>"+
+    "<p>"+ bus.category+"</p></div></div></div>"+
+    "<div class='card-info'>"+
+    "<p class='item'><span></span> "+bus.phone_number+"</p>"+
+    "<p class='item'><span></span>"+bus.address+"</p></div>"+
+    "</div></div>";
+
+    // open popup
+    popup.setLngLat(coordinates)
+        .setHTML(content)
+        .setMaxWidth("300px")
+        .addTo(map);
+
+    console.log(coordinates);
 }
 
 class LogoControl {

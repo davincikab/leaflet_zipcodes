@@ -31,6 +31,13 @@
                       </span>
                     </div>
                 </div>
+
+                <div class="geolocate">
+                    <span><i class="fa fa-map-marker"></i></span>
+                    <span>
+                        Current Location
+                    </span>
+                </div>
             </div>
 
             <div class="map" id="map"></div>
@@ -52,6 +59,22 @@
         });
 
         // create a mapbox control
+        let navigation = new mapboxgl.NavigationControl();
+
+        map.addControl(navigation, "bottom-right");
+
+        // Add geolocate control to the map.
+        var geoControl = new mapboxgl.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true
+                },
+                trackUserLocation: true
+        });
+
+        map.addControl(
+            geoControl, 
+            'top-right'
+        );
     </script>
     <script src="search.js"></script>
 </body>
