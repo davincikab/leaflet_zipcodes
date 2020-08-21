@@ -36,6 +36,10 @@ body {
     color:var(--white);
 }
 
+.row > .col-md-4 {
+    padding:0px 8px !important;
+}
+
 .card {
     font-size: 0.9rem;
     /* height: 20vh; */
