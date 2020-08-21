@@ -26,6 +26,10 @@ body {
     align-items: center;
 }
 
+.navbar-brand {
+    display: none;
+}
+
 .navbar-nav {
     list-style: none;
     margin: 0px;
@@ -189,5 +193,8 @@ body {
     }
     .links {
         margin-left: 1.5em;
+    }
+    .navbar-brand {
+        display: block;
     }
 }
