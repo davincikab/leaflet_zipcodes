@@ -132,7 +132,11 @@ body {
         height: 100vh;
         margin-bottom: 1em;
         box-shadow: none;
-        background-color: #f7f8f9e6;
+        background-color: #f7f8f9b5;
+    }
+
+    .list-group .card-header {
+        background-color: rgba(0, 0, 0, 0.1);
     }
 
     .side-section {
