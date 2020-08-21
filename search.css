@@ -10,6 +10,7 @@ body {
     box-sizing: border-box;
     margin: 0;
     font-size: calc(0.8em + 1vh);
+    overflow: hidden;
 }
 
 .container-fluid {
@@ -36,6 +37,7 @@ body {
     height: 50vh;
     overflow: auto;
     border-radius: 1em;
+    padding-bottom: 5rem;
     /* background-color: var(--white); */
     /* border-top-left-radius: 2em;
     border-top-right-radius: 2em; */
@@ -128,6 +130,7 @@ body {
         margin-bottom: 1em;
         box-shadow:none;
         background-color: var(--gray);
+      
     }
 
     .side-section {
@@ -135,5 +138,6 @@ body {
         left: 1%;
         width: 28%;
         height: 89vh;
+        padding:0px;
     }
 }

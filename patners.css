@@ -1,9 +1,11 @@
 :root {
     --primary: #120D43;
+    --primary-light:#A982C3;
     --secondary: #178BF6;
     --tertiary: #DBBA24;
     --white:#fff;
-    --black:#181818;
+    --black:#4F5153;
+    --gray:#d4d4d4;
 }
 
 body {
@@ -36,19 +38,45 @@ body {
 
 .card {
     font-size: 0.9rem;
-    height: 20vh;
+    /* height: 20vh; */
     margin-bottom: 1em;
-    padding: 0.5em 0.8em;
-    border-radius: 1em;
+    padding: 0em;
+    border-radius: 8px;
+    box-shadow: 2px 2px 0.1em #ddd;
+}
+
+.card-content {
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     align-items: center;
     flex-direction: row;
+}
+
+.card-h {
+    border-bottom: 1px;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    border-style: solid;
+    border-color: var(--gray);
+    padding: 0.2em 0.5em;
+    margin: 0.2em 0.8em;
+}
+
+.card-h > p {
+    margin-left: 4em;
+    margin-bottom:0;
+    color:var(--primary-light);
+}
+
+.card-info {
+    padding: 0.2em 1em;
 }
 
 .item {
     margin:0;
 }
+
 .item > span {
     font-weight: 600;
 }
@@ -56,6 +84,7 @@ body {
 .link {
     color: var(--black);
 }
+
 /* helper styles */
 .img {
     height: 6vh;
