@@ -90,9 +90,12 @@ function forwardGeocoder(query) {
                 'No Partners in Your Area ? </small><a href="" class="">About</a></div>'
         return;
     } else {
-        result.innerHTML = '<div class="empty-result py-3 px-1 text-center"><small class="text-center"><b>No result found</b></small><br>'+
-            '<a class="btn btn-cust mr-3" href="">Add Your Business</a><small> '+
-            'No Partners in Your Area ? </small><a href="" class="">About</a></div>'
+        if(filterData.length == 0) {
+            result.innerHTML = '<div class="empty-result py-3 px-1 text-center"><small class="text-center"><b>No result found</b></small><br>'+
+                '<a class="btn btn-cust mr-3" href="">Add Your Business</a><small> '+
+                'No Partners in Your Area ? </small><a href="" class="">About</a></div>'
+        }
+        
     }
 
     // 
