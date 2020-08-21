@@ -38,6 +38,7 @@ body {
     overflow: auto;
     border-radius: 1em;
     padding-bottom: 5rem;
+    padding-top: 0.2em;
     background-color: var(--white);
     /* border-top-left-radius: 2em;
     border-top-right-radius: 2em; */
@@ -116,22 +117,22 @@ body {
         overflow: hidden;
     }
     #map {
-        left: 30%;
+        left: 0%;
         height: 100vh;
         right: 0;
         top:0;
         bottom:0;    
-        width: 70%;    
+        width: 100%;    
     }
 
     .search-section {
-        top:0;
+        top: 0;
         left: 0%;
-        width:30%;
+        width: 30%;
+        height: 100vh;
         margin-bottom: 1em;
-        box-shadow:none;
-        background-color: var(--gray);
-      
+        box-shadow: none;
+        background-color: #f7f8f9e6;
     }
 
     .side-section {
@@ -140,6 +141,7 @@ body {
         width: 28%;
         height: 89vh;
         padding:0px;
+        z-index: 1;
         background-color: transparent;
     }
 }
