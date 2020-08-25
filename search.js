@@ -8,20 +8,6 @@ var popup = new mapboxgl.Popup({anchor:"top", closeOnMove:false, closeOnClick:fa
 
 // load data
 function loadCitiesData() {
-    // fetch('usa.json')
-    // .then(res => res.json())
-    // .then(response => {
-    //     searchData = response;
-
-    //     if(!isMainPage){
-    //         createListItems(searchData);
-    //     }
-       
-    // })
-    // .catch(error => {
-    //     console.log(error);
-    // });
-
     d3.csv('data.csv')
         .then(data => {
             console.log(data);
@@ -86,16 +72,26 @@ function forwardGeocoder(query) {
     console.log(filterData);
 
     if(filterData.length == 0 && !isMainPage) {
-        sideSection.innerHTML = '<div class="empty-result py-3 px-1 text-center"><small class="text-center"><b>No result found</b></small><br>'+
-                '<a class="btn btn-cust mr-3" href="">Add Your Business</a><small> '+
-                'No Partners in Your Area ? </small><a href="" class="">About</a></div>';
+        sideSection.forEach(sd => {
+            let st = getComputedStyle(sd);
+
+            if(st.display != "none") {
+                sd.innerHTML = '<div class="empty-result py-3 px-1 text-center"><small class="text-center"><b>No result found</b></small><br>'+
+                    '<a class="btn btn-cust mr-3" href="become_partner.html">Add Your Business</a><small> '+
+                    'No Partners in Your Area ? </small><a href="about.html" class="">About</a></div>';
+            }
+        })
+        
         return;
     } else {
         if(filterData.length == 0) {
             result.innerHTML = '<div class="empty-result py-3 px-1 text-center"><small class="text-center"><b>No result found</b></small><br>'+
-                '<a class="btn btn-cust mr-3" href="">Add Your Business</a><small> '+
-                'No Partners in Your Area ? </small><a href="" class="">About</a></div>';
+                '<a class="btn btn-cust mr-3" href="become_partner.html">Add Your Business</a><small> '+
+                'No Partners in Your Area ? </small><a href="about.html" class="">About</a></div>';
+
+            return;
         }
+        
         
     }
 
@@ -263,8 +259,11 @@ class LogoControl {
 }
 
 map.on("load", function(e) {
-    map.addControl(new LogoControl(), "bottom-left")
+    map.addControl(new LogoControl(), "bottom-left");
+
+    // create
 });
+
 
 window.onresize = function(e) {
     console.log(e);

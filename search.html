@@ -12,6 +12,15 @@
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src='https://npmcdn.com/csv2geojson@latest/csv2geojson.js'></script>
     <link rel="stylesheet" href="search.css">
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
+    <link
+        rel="stylesheet"
+        href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css"
+        type="text/css"
+    />
+    <!-- Promise polyfill script required to use Mapbox GL Geocoder in IE 11 -->
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
     </head>
     <body>
         <div class="container-fluid">
@@ -36,22 +45,24 @@
             </div>
 
 
-            <div class="direction">
+            <div class="directions" id="">
+                <span class="close-btn">
+                    <i class="fa fa-times"></i>
+                </span>
                 <!-- Current location -->
                 <div class="input-tab">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">
-                              Desti
-                          </span>
-                        </div>
-        
-                        <input type="text" class="form-control" 
-                            aria-label="Location" id="destination" placeholder="Destination ...">
+                    <div class="input-group mb-2" id="start">        
+                        <!-- <input type="text" class="form-control" 
+                            aria-label="Location"  placeholder="Choose a starting point or click on the map"> -->
+                    </div>
+
+                    <div class="input-group" id="destination">        
+                        <!-- <input type="text" class="form-control" 
+                            aria-label="Location" id="destination" placeholder="Destination ..."> -->
                     </div>
                 </div>
                 <!--  -->
-                <div id="instructions">
+                <div id="instructions" class="instructions">
 
                 </div>
             </div>
@@ -65,6 +76,10 @@
     <script>
         var isMainPage = false;
         var geolocateButton = document.getElementById('geolocate');
+        var directionInfo = {
+            start:[-80.0614393, 26.8830217],
+            destionation:[]
+        };
 
         mapboxgl.accessToken = 'pk.eyJ1IjoiYmVubnl0cm92YXRvIiwiYSI6ImNrZDcwdTVwbTE4amEyem8yZWdkNHN3ZmoifQ.r3Llqtnwfqqju2zfzE-fvA';
 
@@ -74,6 +89,8 @@
             center: [-96.6062800476281,  40.19020391149792],
             zoom: 3,
         });
+
+        var canvas = map.getCanvasContainer();
 
         // create a mapbox control
         let navigation = new mapboxgl.NavigationControl();
@@ -98,77 +115,85 @@
     });
 
      // Direcions
-    function getDirections(type, start, stop) {
-            var coordinates = start.toString() + ';' + stop.toString();
-            var url = "https://api.mapbox.com/directions/v5/mapbox/"+type+"/-122.42,37.78;-77.03,38.91?access_token=" +mapboxgl.accessToken;
+    function getDirections({start, stop}, type="driving") {
+        console.log(start, stop);
+        var coordinates = start.toString() + ';' + stop.toString();
+           
+        var url =
+            'https://api.mapbox.com/directions/v5/mapbox/'+type+'/' + coordinates +
+            '?steps=true&geometries=geojson&access_token=' +  mapboxgl.accessToken;
+
+        console.log(url);
+        fetch(url)
+        .then(res => res.json())
+        .then(directions => {
+            console.log(directions);
+
+            var data = directions.routes[0];
+            var steps = data.legs[0].steps;
+
             
-            var url =
-            'https://api.mapbox.com/directions/v5/mapbox/'+type+'/' +
-            coordinates
-            '?steps=true&geometries=geojson&access_token=' +
-            mapboxgl.accessToken;
-
-            fetch(url)
-            .then(res => res.json())
-            .then(directions => {
-                console.log(directions);
-
-                var data = json.routes[0];
-                var route = data.geometry.coordinates;
-                var geojson = {
-                    'type': 'Feature',
-                    'properties': {},
-                    'geometry': {
+            var route = data.geometry.coordinates;
+            var geojson = {
+                'type': 'Feature',
+                'properties': {},
+                'geometry': {
                     'type': 'LineString',
                     'coordinates': route
-                    }
-                };
+                }
+            };
 
-            })
-            .catch(error => {
-                console.log(error);
-            });
+            console.log(geojson);
+            console.log(steps);
+
+            addRoute(geojson);
+            addDirection(steps, data);
+                
+
+        })
+        .catch(error => {
+            console.log(error);
+        });
     }
 
     // add route
-    function addRoute() {
+    function addRoute(geojson) {
                // if the route already exists on the map, we'll reset it using setData
-               if (map.getSource('route')) {
-                    map.getSource('route').setData(geojson);
-                }
-                // otherwise, we'll make a new request
-                else {
-                    map.addLayer({
-                    'id': 'route',
-                    'type': 'line',
-                    'source': {
-                        'type': 'geojson',
-                        'data': {
-                        'type': 'Feature',
-                        'properties': {},
-                        'geometry': {
-                            'type': 'LineString',
-                            'coordinates': geojson
-                        }
-                        }
-                    },
-                    'layout': {
-                        'line-join': 'round',
-                        'line-cap': 'round'
-                    },
-                    'paint': {
-                        'line-color': '#3887be',
-                        'line-width': 5,
-                        'line-opacity': 0.75
+        if (map.getSource('route')) {
+            map.getSource('route').setData(geojson);
+        }
+        // otherwise, we'll make a new request
+        else {
+            map.addLayer({
+               'id': 'route',
+                'type': 'line',
+                'source': {
+                    'type': 'geojson',
+                    'data': {
+                    'type': 'Feature',
+                    'properties': {},
+                    'geometry': {
+                        'type': 'LineString',
+                        'coordinates': geojson.geometry.coordinates
                     }
-                    });
+                    }
+                },
+                'layout': {
+                    'line-join': 'round',
+                    'line-cap': 'round'
+                },
+                'paint': {
+                    'line-color': '#3887be',
+                    'line-width': 5,
+                    'line-opacity': 0.75
                 }
+                });
+            }
     }
-
     // add directions
-    function addDirection(steps) {
+    function addDirection(steps, data) {
+        // console
         var instructions = document.getElementById('instructions');
-          var steps = data.legs[0].steps;
 
           var tripInstructions = [];
           for (var i = 0; i < steps.length; i++) {
@@ -196,6 +221,109 @@
 
     // Bravabobby@gmail.com
     // Temp123!
+
+    map.on("load", function(e) {
+        map.on('click', function(e) {
+            // 
+            var coordsObj = e.lngLat;
+            canvas.style.cursor = '';
+            var coords = Object.keys(coordsObj).map(function(key) {
+                return coordsObj[key];
+            });
+
+            directionInfo.stop = coords;
+            var end = {
+            'type': 'FeatureCollection',
+            'features': [
+              {
+                'type': 'Feature',
+                'properties': {},
+                'geometry': {
+                  'type': 'Point',
+                  'coordinates': coords
+                }
+              }
+            ]
+          };
+          if (map.getLayer('end')) {
+            map.getSource('end').setData(end);
+          } else {
+            map.addLayer({
+              'id': 'end',
+              'type': 'circle',
+              'source': {
+                'type': 'geojson',
+                'data': {
+                  'type': 'FeatureCollection',
+                  'features': [
+                    {
+                      'type': 'Feature',
+                      'properties': {},
+                      'geometry': {
+                        'type': 'Point',
+                        'coordinates': coords
+                      }
+                    }
+                  ]
+                }
+              },
+              'paint': {
+                'circle-radius': 10,
+                'circle-color': '#f30'
+              }
+            });
+          }
+
+          if(directionInfo.start.length == 0) {
+
+          }else {
+              getDirections(directionInfo, "driving");
+          }
+        });
+    });
+
+    
+    // add geocoders 
+    function forwardGeocoder(query) {
+        var matchingFeatures = [];
+        for (var i = 0; i < searchData.length; i++) {
+            var feature = searchData[i];
+            // handle queries with different capitalization than the source data by calling toLowerCase()
+            if (
+            feature.properties.name
+            .toLowerCase()
+            .search(query.toLowerCase()) !== -1
+            ) {
+                // add a tree emoji as a prefix for custom data results
+                // using carmen geojson format: https://github.com/mapbox/carmen/blob/master/carmen-geojson.md
+                feature['place_name'] = '🌲 ' + feature.properties.name;
+                feature['center'] = feature.geometry.coordinates;
+                feature['place_type'] = ['park'];
+                matchingFeatures.push(feature);
+            }
+        }
+        return matchingFeatures;
+    }
+
+    var geocoderOne = new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        localGeocoder: forwardGeocoder,
+        zoom: 14,
+        placeholder: 'Enter search e.g. Lincoln Park',
+        mapboxgl: mapboxgl
+    });
+
+    geocoderOne.addTo('#start');
+
+    var geocoderTwo = new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        localGeocoder: forwardGeocoder,
+        zoom: 14,
+        placeholder: 'Enter search e.g. Lincoln Park',
+        mapboxgl: mapboxgl
+    });
+
+    geocoderTwo.addTo('#destination');
     </script>
     <script src="search.js"></script>
 </body>
