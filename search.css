@@ -164,7 +164,7 @@ body {
 
 /* popup */
 .card {
-    font-size: 0.9rem;
+    font-size: 0.95em;
     overflow: auto;
     margin-bottom: 1em;
     padding: 0em;
@@ -178,6 +178,10 @@ body {
     /* justify-content: space-between; */
     align-items: center;
     flex-direction: row;
+}
+
+.mapboxgl-popup-content {
+    width: 180px !important;
 }
 
 .card-h {
@@ -340,7 +344,15 @@ body {
 
     .mapboxgl-ctrl-bottom-left {
         bottom: 0;
-        left: 30% !important;
+        left: 360px !important;
+    }
+
+    .card {
+        font-size:0.95em;
+    }
+
+    .mapboxgl-popup-content {
+        width: 300px !important;
     }
 
     .directions {
