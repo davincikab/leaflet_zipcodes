@@ -37,10 +37,10 @@ body {
     width: 100%;
     top: 55%;
     left: 0;
-    height: 50vh;
-    overflow: auto;
+    bottom: 0%;
+    overflow-x: hidden;
     border-radius: 1em;
-    padding-bottom: 5rem;
+    /* padding-bottom: 5rem; */
     padding-top: 0.2em;
     background-color: var(--white);
     /* border-top-left-radius: 2em;
