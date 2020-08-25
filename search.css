@@ -75,6 +75,19 @@ body {
     transform:translateX(-360px);
 }
 
+.input-group .input-group-prepend {
+    display: flex;
+    align-items: center;
+    background-color: #ddd;
+    padding: 0em 0.5em;
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+}
+
+.input-group-prepend > span {
+    transform: rotate(-90deg);
+}
+
 .input-group-text {
     border-radius: 5rem;
     background-color: var(--white);
@@ -263,6 +276,11 @@ body {
     left: 0%;
     padding: 1.8em 0.6em;
     cursor: pointer;
+    transition: transform  .25s cubic-bezier(.6,.1,.27,1.02),-webkit-transform .25s cubic-bezier(.6,.1,.27,1.02);
+}
+
+.directions.close {
+    transform:translateX(-360px);
 }
 
 .close-btn {
@@ -278,6 +296,14 @@ body {
     margin-top:1.1em;
     font-size: 1rem;
     color: var(--black);
+}
+
+#start {
+    z-index: 3;
+}
+
+.input-group .mapboxgl-ctrl-geocoder {
+    width: 100% !important;
 }
 
 /* Media Queries */

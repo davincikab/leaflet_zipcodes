@@ -28,6 +28,12 @@
                 <div class="input-group">
                     <input type="text" class="form-control" 
                         aria-label="Location" id="location-bar" placeholder="Search">
+
+                    <div class="input-group-prepend" id="toggle-direction">
+                        <span class="input-prepend-text">
+                            <i class="fa fa-level-down"></i>
+                        </span>
+                    </div>
                 </div>
 
                 <div class="geolocate" id="geolocate">
@@ -45,8 +51,8 @@
             </div>
 
 
-            <div class="directions" id="">
-                <span class="close-btn">
+            <div class="directions close" id="directions">
+                <span class="close-btn" id="close-btn">
                     <i class="fa fa-times"></i>
                 </span>
                 <!-- Current location -->
@@ -72,7 +78,7 @@
                 <!-- <span>Results</span> -->
             </div>
         </div>
-
+    <script src='https://unpkg.com/@turf/turf/turf.min.js'></script>
     <script>
         var isMainPage = false;
         var geolocateButton = document.getElementById('geolocate');
@@ -209,14 +215,30 @@
 
     // toggle side section
     var toggleButton = document.getElementById("collapse-btn");
+    var closeButton = document.getElementById("close-btn");
+    var openDirection = document.getElementById("toggle-direction");
     var sidetab = document.getElementById('side-tab');
     var logoControlSection = document.getElementsByClassName("mapboxgl-ctrl-bottom-left")[0];
+    var directionTab = document.getElementById('directions');
 
     toggleButton.addEventListener('click', function(e) {
         sidetab.classList.toggle('side-tab-close');
         logoControlSection.classList.toggle('logo-open');
 
+        // condition on direction tab
+        if(!directionTab.classList.contains("close")) {
+            directionTab.classList.toggle("close");
+        }
+
         e.stopPropagation();
+    });
+
+    closeButton.addEventListener('click', function(e) {
+        directionTab.classList.add("close");
+    });
+
+    openDirection.addEventListener('click', function(e) {
+        directionTab.classList.remove("close");
     });
 
     // Bravabobby@gmail.com
@@ -308,22 +330,58 @@
     var geocoderOne = new MapboxGeocoder({
         accessToken: mapboxgl.accessToken,
         localGeocoder: forwardGeocoder,
+        reverseGeocode:true,
         zoom: 14,
-        placeholder: 'Enter search e.g. Lincoln Park',
+        placeholder: 'Enter search e.g. Wright Fighting Concepts',
         mapboxgl: mapboxgl
     });
 
     geocoderOne.addTo('#start');
 
+    // update start
+    geocoderOne.on("result", function(result) {
+        console.log(result);
+        directionInfo.start = result.result.center;
+    });
+
     var geocoderTwo = new MapboxGeocoder({
         accessToken: mapboxgl.accessToken,
         localGeocoder: forwardGeocoder,
         zoom: 14,
-        placeholder: 'Enter search e.g. Lincoln Park',
+        reverseGeocode:true,
+        placeholder: 'Destination ....',
         mapboxgl: mapboxgl
     });
-
+    
     geocoderTwo.addTo('#destination');
+
+    geocoderTwo.on("result", function(result) {
+        console.log(result);
+        directionInfo.stop = result.result.center;
+
+        if(directionInfo.start.length != 0) {
+            getDirections(directionInfo, "driving");
+        }
+    });
+
+
+    // 
+    function getClosestPoint(center) {
+        
+        let searchWithin = turf.buffer(
+            turf.point(center),
+            50,
+            {units: 'miles'}
+        );
+
+        let pts = searchData;
+
+        let pointInPolygon = turf.pointsWithinPolygon(points, searchWithin);
+
+        // update filter data
+
+        // call createlist method.
+    }
     </script>
     <script src="search.js"></script>
 </body>
