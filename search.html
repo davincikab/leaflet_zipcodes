@@ -15,7 +15,7 @@
     </head>
     <body>
         <div class="container-fluid">
-            <div class="search-section">
+            <div class="search-section" id="side-tab">
                 <div class="input-group">
                     <input type="text" class="form-control" 
                         aria-label="Location" id="location-bar" placeholder="Search">
@@ -32,7 +32,7 @@
                     <!-- <span>Results</span> -->
                 </div>
 
-                <div class="search-collapse-btn"></div>
+                <div class="search-collapse-btn" id="collapse-btn"></div>
             </div>
 
 
@@ -181,6 +181,19 @@
               tripInstructions;
           }
     }
+
+    // toggle side section
+    var toggleButton = document.getElementById("collapse-btn");
+    var sidetab = document.getElementById('side-tab');
+    var logoControlSection = document.getElementsByClassName("mapboxgl-ctrl-bottom-left")[0];
+
+    toggleButton.addEventListener('click', function(e) {
+        sidetab.classList.toggle('side-tab-close');
+        logoControlSection.classList.toggle('logo-open');
+
+        e.stopPropagation();
+    });
+
     // Bravabobby@gmail.com
     // Temp123!
     </script>

@@ -54,9 +54,10 @@ body {
     cursor: pointer;
 }
 
-    .search-section > .side-section {
-        display: none;
-    }
+
+.search-section > .side-section {
+    display: none;
+}
 
 .search-section{
     position: absolute;
@@ -67,9 +68,12 @@ body {
     /* background-color:var(--white); */
     /* box-shadow: 2px 2px 0.2em #ddd; */
     cursor: pointer;
+    transition: transform  .25s cubic-bezier(.6,.1,.27,1.02),-webkit-transform .25s cubic-bezier(.6,.1,.27,1.02);
 }
 
-
+.search-section.side-tab-close {
+    transform:translateX(-360px);
+}
 
 .input-group-text {
     border-radius: 5rem;
@@ -345,6 +349,10 @@ body {
     .mapboxgl-ctrl-bottom-left {
         bottom: 0;
         left: 360px !important;
+    }
+
+    .mapboxgl-ctrl-bottom-left.logo-open {
+        left: 0px !important;
     }
 
     .card {
