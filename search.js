@@ -1,6 +1,6 @@
 var searchBar = document.getElementById('location-bar');
 var result = document.getElementById('result');
-var sideSection = document.getElementById('side-section');
+var sideSection = document.querySelectorAll('.side-section');
 var filterData;
 var searchData;
 var locationMarker;
@@ -121,7 +121,9 @@ function createListItems(filterData) {
     let categories = filterData.map(datum => datum.properties.category);
     categories = [...new Set(categories)];
 
-    sideSection.innerHTML = '';
+    sideSection[0].innerHTML = '';
+    sideSection[1].innerHTML = '';
+
     categories.forEach(category => {
         var docFrag = document.createElement('ul');
         docFrag.classList.add("list-group");
@@ -140,7 +142,14 @@ function createListItems(filterData) {
             list.setAttribute('data-type', 'city');
             list.setAttribute('data-title', data.properties.name);
 
-            list.innerHTML = data.properties.name;
+             // add an image
+            list.innerHTML += "<div><img src='images/gsn.logostamp_blue.png' class='img'></div>";
+
+            // add the title and address
+            list.innerHTML += "<div ><div class='title'>"+data.properties.name+"</div>"+
+            "<div class='text-small'>"+data.properties.address+"</div></div>";
+
+            // list.innerHTML = data.properties.name;
 
             list.addEventListener('click',flyToMarker);
 
@@ -148,10 +157,18 @@ function createListItems(filterData) {
             
         });
 
-        // add to result
-        sideSection.append(docFrag);
-    });
+    //    
+        sideSection.forEach(sd => {
+            let st = getComputedStyle(sd);
 
+            if(st.display != "none") {
+                sd.appendChild(docFrag);
+            }
+        })
+       return category;
+    }); 
+
+   
 }
 
 function createListGroupItems(filterData) {
@@ -248,3 +265,10 @@ class LogoControl {
 map.on("load", function(e) {
     map.addControl(new LogoControl(), "bottom-left")
 });
+
+window.onresize = function(e) {
+    console.log(e);
+    if(!isMainPage) {
+        createListItems(searchData);
+    }
+}

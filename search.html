@@ -17,26 +17,42 @@
         <div class="container-fluid">
             <div class="search-section">
                 <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">
-                          <i class="fa fa-map-marker"></i>
-                      </span>
-                    </div>
-    
                     <input type="text" class="form-control" 
-                        aria-label="Location" id="location-bar" placeholder="Business Address, ZipCode ....">
-                    <div class="input-group-append">
-                      <span class="input-group-text">
-                          <i class="fa fa-search"></i>
-                      </span>
-                    </div>
+                        aria-label="Location" id="location-bar" placeholder="Search">
                 </div>
 
-                <div class="geolocate">
+                <div class="geolocate" id="geolocate">
                     <span><i class="fa fa-map-marker"></i></span>
                     <span>
                         Current Location
                     </span>
+                </div>
+
+                <div class="side-section" id="side-section">
+                    <!-- <span>Results</span> -->
+                </div>
+
+                <div class="search-collapse-btn"></div>
+            </div>
+
+
+            <div class="direction">
+                <!-- Current location -->
+                <div class="input-tab">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text">
+                              Desti
+                          </span>
+                        </div>
+        
+                        <input type="text" class="form-control" 
+                            aria-label="Location" id="destination" placeholder="Destination ...">
+                    </div>
+                </div>
+                <!--  -->
+                <div id="instructions">
+
                 </div>
             </div>
 
@@ -48,6 +64,7 @@
 
     <script>
         var isMainPage = false;
+        var geolocateButton = document.getElementById('geolocate');
 
         mapboxgl.accessToken = 'pk.eyJ1IjoiYmVubnl0cm92YXRvIiwiYSI6ImNrZDcwdTVwbTE4amEyem8yZWdkNHN3ZmoifQ.r3Llqtnwfqqju2zfzE-fvA';
 
@@ -75,6 +92,97 @@
             geoControl, 
             'top-right'
         );
+    
+    geolocateButton.addEventListener("click", function(e) {
+        geoControl.trigger();
+    });
+
+     // Direcions
+    function getDirections(type, start, stop) {
+            var coordinates = start.toString() + ';' + stop.toString();
+            var url = "https://api.mapbox.com/directions/v5/mapbox/"+type+"/-122.42,37.78;-77.03,38.91?access_token=" +mapboxgl.accessToken;
+            
+            var url =
+            'https://api.mapbox.com/directions/v5/mapbox/'+type+'/' +
+            coordinates
+            '?steps=true&geometries=geojson&access_token=' +
+            mapboxgl.accessToken;
+
+            fetch(url)
+            .then(res => res.json())
+            .then(directions => {
+                console.log(directions);
+
+                var data = json.routes[0];
+                var route = data.geometry.coordinates;
+                var geojson = {
+                    'type': 'Feature',
+                    'properties': {},
+                    'geometry': {
+                    'type': 'LineString',
+                    'coordinates': route
+                    }
+                };
+
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+    // add route
+    function addRoute() {
+               // if the route already exists on the map, we'll reset it using setData
+               if (map.getSource('route')) {
+                    map.getSource('route').setData(geojson);
+                }
+                // otherwise, we'll make a new request
+                else {
+                    map.addLayer({
+                    'id': 'route',
+                    'type': 'line',
+                    'source': {
+                        'type': 'geojson',
+                        'data': {
+                        'type': 'Feature',
+                        'properties': {},
+                        'geometry': {
+                            'type': 'LineString',
+                            'coordinates': geojson
+                        }
+                        }
+                    },
+                    'layout': {
+                        'line-join': 'round',
+                        'line-cap': 'round'
+                    },
+                    'paint': {
+                        'line-color': '#3887be',
+                        'line-width': 5,
+                        'line-opacity': 0.75
+                    }
+                    });
+                }
+    }
+
+    // add directions
+    function addDirection(steps) {
+        var instructions = document.getElementById('instructions');
+          var steps = data.legs[0].steps;
+
+          var tripInstructions = [];
+          for (var i = 0; i < steps.length; i++) {
+            tripInstructions.push('<br><li>' + steps[i].maneuver.instruction) +
+              '</li>';
+            instructions.innerHTML =
+              '<br><span class="duration">Trip duration: ' +
+              Math.floor(data.duration / 60) +
+              ' min 🚴 </span>' +
+              tripInstructions;
+          }
+    }
+    // Bravabobby@gmail.com
+    // Temp123!
     </script>
     <script src="search.js"></script>
 </body>
