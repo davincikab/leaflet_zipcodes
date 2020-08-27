@@ -81,6 +81,7 @@
     <script src='https://unpkg.com/@turf/turf/turf.min.js'></script>
     <script>
         var isMainPage = false;
+        var userLocation = [];
         var geolocateButton = document.getElementById('geolocate');
         var directionInfo = {
             start:[-80.0614393, 26.8830217],
@@ -116,272 +117,275 @@
             'top-right'
         );
     
-    geolocateButton.addEventListener("click", function(e) {
-        geoControl.trigger();
-    });
-
-     // Direcions
-    function getDirections({start, stop}, type="driving") {
-        console.log(start, stop);
-        var coordinates = start.toString() + ';' + stop.toString();
-           
-        var url =
-            'https://api.mapbox.com/directions/v5/mapbox/'+type+'/' + coordinates +
-            '?steps=true&geometries=geojson&access_token=' +  mapboxgl.accessToken;
-
-        console.log(url);
-        fetch(url)
-        .then(res => res.json())
-        .then(directions => {
-            console.log(directions);
-
-            var data = directions.routes[0];
-            var steps = data.legs[0].steps;
-
-            
-            var route = data.geometry.coordinates;
-            var geojson = {
-                'type': 'Feature',
-                'properties': {},
-                'geometry': {
-                    'type': 'LineString',
-                    'coordinates': route
-                }
-            };
-
-            console.log(geojson);
-            console.log(steps);
-
-            addRoute(geojson);
-            addDirection(steps, data);
-                
-
-        })
-        .catch(error => {
-            console.log(error);
+        geolocateButton.addEventListener("click", function(e) {
+            geoControl.trigger();
         });
-    }
 
-    // add route
-    function addRoute(geojson) {
-               // if the route already exists on the map, we'll reset it using setData
-        if (map.getSource('route')) {
-            map.getSource('route').setData(geojson);
-        }
-        // otherwise, we'll make a new request
-        else {
-            map.addLayer({
-               'id': 'route',
-                'type': 'line',
-                'source': {
-                    'type': 'geojson',
-                    'data': {
+        // Direcions
+        function getDirections({start, stop}, type="driving") {
+            console.log(start, stop);
+            var coordinates = start.toString() + ';' + stop.toString();
+            
+            var url =
+                'https://api.mapbox.com/directions/v5/mapbox/'+type+'/' + coordinates +
+                '?steps=true&geometries=geojson&access_token=' +  mapboxgl.accessToken;
+
+            console.log(url);
+            fetch(url)
+            .then(res => res.json())
+            .then(directions => {
+                console.log(directions);
+
+                var data = directions.routes[0];
+                var steps = data.legs[0].steps;
+
+                
+                var route = data.geometry.coordinates;
+                var geojson = {
                     'type': 'Feature',
                     'properties': {},
                     'geometry': {
                         'type': 'LineString',
-                        'coordinates': geojson.geometry.coordinates
+                        'coordinates': route
                     }
+                };
+
+                console.log(geojson);
+                console.log(steps);
+
+                addRoute(geojson);
+                addDirection(steps, data);
+                    
+
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        }
+
+        // add route
+        function addRoute(geojson) {
+                // if the route already exists on the map, we'll reset it using setData
+            if (map.getSource('route')) {
+                map.getSource('route').setData(geojson);
+            }
+            // otherwise, we'll make a new request
+            else {
+                map.addLayer({
+                'id': 'route',
+                    'type': 'line',
+                    'source': {
+                        'type': 'geojson',
+                        'data': {
+                        'type': 'Feature',
+                        'properties': {},
+                        'geometry': {
+                            'type': 'LineString',
+                            'coordinates': geojson.geometry.coordinates
+                        }
+                        }
+                    },
+                    'layout': {
+                        'line-join': 'round',
+                        'line-cap': 'round'
+                    },
+                    'paint': {
+                        'line-color': '#3887be',
+                        'line-width': 5,
+                        'line-opacity': 0.75
                     }
-                },
-                'layout': {
-                    'line-join': 'round',
-                    'line-cap': 'round'
+                    });
+                }
+        }
+        // add directions
+        function addDirection(steps, data) {
+            // console
+            var instructions = document.getElementById('instructions');
+
+            var tripInstructions = [];
+            for (var i = 0; i < steps.length; i++) {
+                tripInstructions.push('<br><li>' + steps[i].maneuver.instruction) +
+                '</li>';
+                instructions.innerHTML =
+                '<br><span class="duration">Trip duration: ' +
+                Math.floor(data.duration / 60) +
+                ' min 🚴 </span>' +
+                tripInstructions;
+            }
+        }
+
+        // toggle side section
+        var toggleButton = document.getElementById("collapse-btn");
+        var closeButton = document.getElementById("close-btn");
+        var openDirection = document.getElementById("toggle-direction");
+        var sidetab = document.getElementById('side-tab');
+        var logoControlSection = document.getElementsByClassName("mapboxgl-ctrl-bottom-left")[0];
+        var directionTab = document.getElementById('directions');
+
+        toggleButton.addEventListener('click', function(e) {
+            sidetab.classList.toggle('side-tab-close');
+            logoControlSection.classList.toggle('logo-open');
+
+            // condition on direction tab
+            if(!directionTab.classList.contains("close")) {
+                directionTab.classList.toggle("close");
+            }
+
+            e.stopPropagation();
+        });
+
+        closeButton.addEventListener('click', function(e) {
+            directionTab.classList.add("close");
+        });
+
+        openDirection.addEventListener('click', function(e) {
+            directionTab.classList.remove("close");
+        });
+
+        // Bravabobby@gmail.com
+        // Temp123!
+
+        map.on("load", function(e) {
+            map.on('click', function(e) {
+                // 
+                var coordsObj = e.lngLat;
+                canvas.style.cursor = '';
+                var coords = Object.keys(coordsObj).map(function(key) {
+                    return coordsObj[key];
+                });
+
+                directionInfo.stop = coords;
+
+                // geocode the coordinates
+                
+                var end = {
+                'type': 'FeatureCollection',
+                'features': [
+                {
+                    'type': 'Feature',
+                    'properties': {},
+                    'geometry': {
+                    'type': 'Point',
+                    'coordinates': coords
+                    }
+                }
+                ]
+            };
+            if (map.getLayer('end')) {
+                map.getSource('end').setData(end);
+            } else {
+                map.addLayer({
+                'id': 'end',
+                'type': 'circle',
+                'source': {
+                    'type': 'geojson',
+                    'data': {
+                    'type': 'FeatureCollection',
+                    'features': [
+                        {
+                        'type': 'Feature',
+                        'properties': {},
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': coords
+                        }
+                        }
+                    ]
+                    }
                 },
                 'paint': {
-                    'line-color': '#3887be',
-                    'line-width': 5,
-                    'line-opacity': 0.75
+                    'circle-radius': 10,
+                    'circle-color': '#f30'
                 }
                 });
             }
-    }
-    // add directions
-    function addDirection(steps, data) {
-        // console
-        var instructions = document.getElementById('instructions');
 
-          var tripInstructions = [];
-          for (var i = 0; i < steps.length; i++) {
-            tripInstructions.push('<br><li>' + steps[i].maneuver.instruction) +
-              '</li>';
-            instructions.innerHTML =
-              '<br><span class="duration">Trip duration: ' +
-              Math.floor(data.duration / 60) +
-              ' min 🚴 </span>' +
-              tripInstructions;
-          }
-    }
+            if(directionInfo.start.length == 0) {
 
-    // toggle side section
-    var toggleButton = document.getElementById("collapse-btn");
-    var closeButton = document.getElementById("close-btn");
-    var openDirection = document.getElementById("toggle-direction");
-    var sidetab = document.getElementById('side-tab');
-    var logoControlSection = document.getElementsByClassName("mapboxgl-ctrl-bottom-left")[0];
-    var directionTab = document.getElementById('directions');
-
-    toggleButton.addEventListener('click', function(e) {
-        sidetab.classList.toggle('side-tab-close');
-        logoControlSection.classList.toggle('logo-open');
-
-        // condition on direction tab
-        if(!directionTab.classList.contains("close")) {
-            directionTab.classList.toggle("close");
-        }
-
-        e.stopPropagation();
-    });
-
-    closeButton.addEventListener('click', function(e) {
-        directionTab.classList.add("close");
-    });
-
-    openDirection.addEventListener('click', function(e) {
-        directionTab.classList.remove("close");
-    });
-
-    // Bravabobby@gmail.com
-    // Temp123!
-
-    map.on("load", function(e) {
-        map.on('click', function(e) {
-            // 
-            var coordsObj = e.lngLat;
-            canvas.style.cursor = '';
-            var coords = Object.keys(coordsObj).map(function(key) {
-                return coordsObj[key];
-            });
-
-            directionInfo.stop = coords;
-            var end = {
-            'type': 'FeatureCollection',
-            'features': [
-              {
-                'type': 'Feature',
-                'properties': {},
-                'geometry': {
-                  'type': 'Point',
-                  'coordinates': coords
-                }
-              }
-            ]
-          };
-          if (map.getLayer('end')) {
-            map.getSource('end').setData(end);
-          } else {
-            map.addLayer({
-              'id': 'end',
-              'type': 'circle',
-              'source': {
-                'type': 'geojson',
-                'data': {
-                  'type': 'FeatureCollection',
-                  'features': [
-                    {
-                      'type': 'Feature',
-                      'properties': {},
-                      'geometry': {
-                        'type': 'Point',
-                        'coordinates': coords
-                      }
-                    }
-                  ]
-                }
-              },
-              'paint': {
-                'circle-radius': 10,
-                'circle-color': '#f30'
-              }
-            });
-          }
-
-          if(directionInfo.start.length == 0) {
-
-          }else {
-              getDirections(directionInfo, "driving");
-          }
-        });
-    });
-
-    
-    // add geocoders 
-    function forwardGeocoder(query) {
-        var matchingFeatures = [];
-        for (var i = 0; i < searchData.length; i++) {
-            var feature = searchData[i];
-            // handle queries with different capitalization than the source data by calling toLowerCase()
-            if (
-            feature.properties.name
-            .toLowerCase()
-            .search(query.toLowerCase()) !== -1
-            ) {
-                // add a tree emoji as a prefix for custom data results
-                // using carmen geojson format: https://github.com/mapbox/carmen/blob/master/carmen-geojson.md
-                feature['place_name'] = '🌲 ' + feature.properties.name;
-                feature['center'] = feature.geometry.coordinates;
-                feature['place_type'] = ['park'];
-                matchingFeatures.push(feature);
+            }else {
+                getDirections(directionInfo, "driving");
             }
-        }
-        return matchingFeatures;
-    }
+            });
+        });
 
-    var geocoderOne = new MapboxGeocoder({
-        accessToken: mapboxgl.accessToken,
-        localGeocoder: forwardGeocoder,
-        reverseGeocode:true,
-        zoom: 14,
-        placeholder: 'Enter search e.g. Wright Fighting Concepts',
-        mapboxgl: mapboxgl
-    });
-
-    geocoderOne.addTo('#start');
-
-    // update start
-    geocoderOne.on("result", function(result) {
-        console.log(result);
-        directionInfo.start = result.result.center;
-    });
-
-    var geocoderTwo = new MapboxGeocoder({
-        accessToken: mapboxgl.accessToken,
-        localGeocoder: forwardGeocoder,
-        zoom: 14,
-        reverseGeocode:true,
-        placeholder: 'Destination ....',
-        mapboxgl: mapboxgl
-    });
-    
-    geocoderTwo.addTo('#destination');
-
-    geocoderTwo.on("result", function(result) {
-        console.log(result);
-        directionInfo.stop = result.result.center;
-
-        if(directionInfo.start.length != 0) {
-            getDirections(directionInfo, "driving");
-        }
-    });
-
-
-    // 
-    function getClosestPoint(center) {
         
-        let searchWithin = turf.buffer(
-            turf.point(center),
-            50,
-            {units: 'miles'}
-        );
+        // add geocoders 
+        function forwardGeocoder(query) {
+            var matchingFeatures = [];
+            for (var i = 0; i < searchData.length; i++) {
+                var feature = searchData[i];
+                // handle queries with different capitalization than the source data by calling toLowerCase()
+                if (
+                feature.properties.name
+                .toLowerCase()
+                .search(query.toLowerCase()) !== -1
+                ) {
+                    // add a tree emoji as a prefix for custom data results
+                    // using carmen geojson format: https://github.com/mapbox/carmen/blob/master/carmen-geojson.md
+                    feature['place_name'] = '🌲 ' + feature.properties.name;
+                    feature['center'] = feature.geometry.coordinates;
+                    feature['place_type'] = ['park'];
+                    matchingFeatures.push(feature);
+                }
+            }
+            return matchingFeatures;
+        }
 
-        let pts = searchData;
+        var geocoderOne = new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken,
+            localGeocoder: forwardGeocoder,
+            reverseGeocode:true,
+            zoom: 14,
+            placeholder: 'Enter search e.g. Wright Fighting Concepts',
+            mapboxgl: mapboxgl
+        });
 
-        let pointInPolygon = turf.pointsWithinPolygon(points, searchWithin);
+        geocoderOne.addTo('#start');
 
-        // update filter data
+        // update start
+        geocoderOne.on("result", function(result) {
+            console.log(result);
+            directionInfo.start = result.result.center;
+        });
 
-        // call createlist method.
-    }
+        var geocoderTwo = new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken,
+            localGeocoder: forwardGeocoder,
+            zoom: 14,
+            reverseGeocode:true,
+            placeholder: 'Destination ....',
+            mapboxgl: mapboxgl
+        });
+        
+        geocoderTwo.addTo('#destination');
+
+        geocoderTwo.on("result", function(result) {
+            console.log(result);
+            directionInfo.stop = result.result.center;
+
+            if(directionInfo.start.length != 0) {
+                getDirections(directionInfo, "driving");
+            }
+        });
+
+
+        // 
+        function getClosestPoint(center) {
+            
+            let searchWithin = turf.buffer(
+                turf.point(center),
+                50,
+                {units: 'miles'}
+            );
+
+            let pts = searchData;
+
+            let pointInPolygon = turf.pointsWithinPolygon(points, searchWithin);
+
+            // update filter data
+
+            // call createlist method.
+        }
     </script>
     <script src="search.js"></script>
 </body>
