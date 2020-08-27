@@ -235,7 +235,8 @@ function flyToMarker(e) {
     "<p>"+ bus.category+"</p></div></div></div>"+
     "<div class='card-info'>"+
     "<p class='item'><span></span> "+bus.phone_number+"</p>"+
-    "<p class='item'><span></span>"+bus.address+"</p></div>"+
+    "<p class='item'><span></span>"+bus.address+"</p>"+
+    "<button class='btn btn-sm btn-primary' onClick='getDirection(["+coordinates+"])'>Get Direction</button></div>"+
     "</div></div>";
 
     // open popup
@@ -245,6 +246,28 @@ function flyToMarker(e) {
         .addTo(map);
 
     console.log(coordinates);
+}
+
+function getDirection(destination) {
+    // update the start with user location or start location
+    console.log(destination);
+
+    directionInfo.stop = destination;
+    // if(userLocation.length > 0) {
+    //     directionInfo.start = userLocation;
+    // } else {
+    //     alert("provide user location");
+    //     return;
+    // }
+
+    // update the geocoder input
+    geocoderOne.setInput(directionInfo.start);
+    geocoderTwo.setInput(directionInfo.stop);
+
+    // call get direction method
+    getDirections(directionInfo, "driving");
+
+    toggleDirectionTab();
 }
 
 class LogoControl {
@@ -272,6 +295,10 @@ map.on("load", function(e) {
 window.onresize = function(e) {
     console.log(e);
     if(!isMainPage) {
-        createListItems(searchData);
+        // if(filterData.length == 0) {
+        //     filterData == searchData;
+        // }
+
+        cleanFilterData(filterData);
     }
 }

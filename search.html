@@ -122,6 +122,8 @@
             directionInfo.start = [...location].reverse();
             geocoderOne.setInput([...location].toString());
 
+            userLocation = [...location].reverse();
+
             // get the schools in order
             getClosestPoint([...location].reverse());
         });
@@ -216,7 +218,14 @@
                     }
                     });
                 }
+
+            // close the pop
+            popup.remove();
+
+            // zoom to street layer
+            fitToRouteBounds(geojson);
         }
+
         // add directions
         function addDirection(steps, data) {
             // console
@@ -232,6 +241,18 @@
                 ' min 🚴 </span>' +
                 tripInstructions;
             }
+        }
+
+        function fitToRouteBounds(route) {
+            // calculate the layer bounds
+            let bounds = turf.bbox(route);
+
+            console.log(bounds);
+
+            // fit the bounds to the map
+            map.fitBounds(bounds, {
+                padding: {top: 10, bottom:5, left: 10, right: 5}
+            });
         }
 
         // toggle side section
@@ -259,8 +280,12 @@
         });
 
         openDirection.addEventListener('click', function(e) {
-            directionTab.classList.remove("close");
+           toggleDirectionTab();
         });
+
+        function toggleDirectionTab() {
+            directionTab.classList.remove("close");
+        }
 
         // Bravabobby@gmail.com
         // Temp123!
@@ -280,18 +305,61 @@
                 geocoderTwo.setInput([...coords].reverse().toString());
                 
                 var end = {
-                'type': 'FeatureCollection',
-                'features': [
-                {
-                    'type': 'Feature',
-                    'properties': {},
-                    'geometry': {
-                    'type': 'Point',
-                    'coordinates': coords
+                    'type': 'FeatureCollection',
+                    'features': [
+                    {
+                        'type': 'Feature',
+                        'properties': {},
+                        'geometry': {
+                        'type': 'Point',
+                        'coordinates': coords
+                        }
                     }
+                    ]
+                };
+
+                updateDestionationLayer(coords);
+
+                if(directionInfo.start.length == 0) {
+
+                }else {
+                    getDirections(directionInfo, "driving");
                 }
-                ]
-            };
+            });
+        });
+
+        function updateStartLayer(coords) {
+            if (map.getLayer('start')) {
+                map.getSource('start').setData(end);
+            } else {
+                map.addLayer({
+                'id': 'start',
+                'type': 'circle',
+                'source': {
+                    'type': 'geojson',
+                    'data': {
+                    'type': 'FeatureCollection',
+                    'features': [
+                        {
+                        'type': 'Feature',
+                        'properties': {},
+                        'geometry': {
+                            'type': 'Point',
+                            'coordinates': coords
+                        }
+                        }
+                    ]
+                    }
+                },
+                'paint': {
+                    'circle-radius': 10,
+                    'circle-color': '#00ff00'
+                }
+                });
+            }
+        }
+
+        function updateDestionationLayer(coords) {
             if (map.getLayer('end')) {
                 map.getSource('end').setData(end);
             } else {
@@ -320,15 +388,7 @@
                 }
                 });
             }
-
-            if(directionInfo.start.length == 0) {
-
-            }else {
-                getDirections(directionInfo, "driving");
-            }
-            });
-        });
-
+        }
         
         // add geocoders 
         function forwardGeocoder(query) {
@@ -367,6 +427,16 @@
         geocoderOne.on("result", function(result) {
             console.log(result);
             directionInfo.start = result.result.center;
+
+            updateStartLayer(directionInfo.start);
+
+            if(directionInfo.stop.length != 0) {
+                getDirections(directionInfo, "driving");
+            }
+        });
+
+        geocoderOne.on('loading', function(query) {
+            updateRoute();
         });
 
         var geocoderTwo = new MapboxGeocoder({
@@ -384,21 +454,42 @@
             console.log(result);
             directionInfo.stop = result.result.center;
 
+            updateDestionationLayer(directionInfo.stop);
+
             if(directionInfo.start.length != 0) {
                 getDirections(directionInfo, "driving");
             }
         });
 
+        geocoderTwo.on('loading', function(query) {
+            updateRoute();
+        });
 
-        // 
+
+        function updateRoute() {
+            var geojson = {
+                'type': 'Feature',
+                'properties': {},
+                'geometry': {
+                    'type': 'LineString',
+                        'coordinates': route
+                }
+            };
+
+            addRoute(geojson);            
+        }
+
+
+
+        // get schools within 20 miles from user location
         function getClosestPoint(center) {
             let searchWithin = turf.buffer(
                 turf.point(center),
-                20,
-                {units: 'miles'}
+                proximityDistance,
+                {
+                    units: 'miles'
+                }
             );
-
-            console.log(searchWithin);
 
             let points = turf.featureCollection(searchData);
             console.log(points);
@@ -406,10 +497,10 @@
             let pointInPolygon = turf.pointsWithinPolygon(points, searchWithin);
 
             // update filter data
-            let closestPts = JSON.parse(JSON.stringify(pointInPolygon.features));
+            filterData = JSON.parse(JSON.stringify(pointInPolygon.features));
 
             // call createlist method.
-            cleanFilterData(closestPts);
+            cleanFilterData(filterData);
         }
     </script>
     <script src="search.js"></script>

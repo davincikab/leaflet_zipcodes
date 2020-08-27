@@ -280,7 +280,7 @@ body {
 }
 
 .directions.close {
-    transform:translateX(-360px);
+    transform:translateX(-100%);
 }
 
 .close-btn {
