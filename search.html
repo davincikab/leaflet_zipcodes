@@ -82,9 +82,10 @@
     <script>
         var isMainPage = false;
         var userLocation = [];
+        var proximityDistance = 20;
         var geolocateButton = document.getElementById('geolocate');
         var directionInfo = {
-            start:[-80.0614393, 26.8830217],
+            start:[-76.13310817917284, 40.24597497004339],
             destionation:[]
         };
 
@@ -109,7 +110,26 @@
             positionOptions: {
                 enableHighAccuracy: true
                 },
-                trackUserLocation: true
+                trackUserLocation: false
+        });
+
+        geoControl.on('geolocate', function(data) {
+            console.log(data.coords.latitude);
+            let location = [data.coords.latitude, data.coords.longitude];
+            console.log(location);
+
+            // update user location
+            directionInfo.start = [...location].reverse();
+            geocoderOne.setInput([...location].toString());
+
+            // get the schools in order
+            getClosestPoint([...location].reverse());
+        });
+
+        geoControl.on('error', function(e) {
+            console.log(error);
+
+            alert(error.message);
         });
 
         map.addControl(
@@ -257,6 +277,7 @@
                 directionInfo.stop = coords;
 
                 // geocode the coordinates
+                geocoderTwo.setInput([...coords].reverse().toString());
                 
                 var end = {
                 'type': 'FeatureCollection',
@@ -371,20 +392,24 @@
 
         // 
         function getClosestPoint(center) {
-            
             let searchWithin = turf.buffer(
                 turf.point(center),
-                50,
+                20,
                 {units: 'miles'}
             );
 
-            let pts = searchData;
+            console.log(searchWithin);
+
+            let points = turf.featureCollection(searchData);
+            console.log(points);
 
             let pointInPolygon = turf.pointsWithinPolygon(points, searchWithin);
 
             // update filter data
+            let closestPts = JSON.parse(JSON.stringify(pointInPolygon.features));
 
             // call createlist method.
+            cleanFilterData(closestPts);
         }
     </script>
     <script src="search.js"></script>

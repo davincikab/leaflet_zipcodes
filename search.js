@@ -69,8 +69,12 @@ function forwardGeocoder(query) {
         }
     });
 
+    cleanFilterData(filterData);
     console.log(filterData);
+    
+}
 
+function cleanFilterData(filterData) {
     if(filterData.length == 0 && !isMainPage) {
         sideSection.forEach(sd => {
             let st = getComputedStyle(sd);
@@ -101,8 +105,8 @@ function forwardGeocoder(query) {
     } else {
         createListItems(JSON.parse(JSON.stringify(filterData)));
     }
-    
 }
+
 
 function createMarkers(businessdata) {
     businessdata.features.forEach(business => {
