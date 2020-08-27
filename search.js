@@ -143,7 +143,7 @@ function createListItems(filterData) {
             list.setAttribute('data-title', data.properties.name);
 
              // add an image
-            list.innerHTML += "<div><img src='images/gsn.logostamp_blue.png' class='img'></div>";
+            list.innerHTML += "<div><img src='images/"+data.properties.logo+"' class='img'></div>";
 
             // add the title and address
             list.innerHTML += "<div ><div class='title'>"+data.properties.name+"</div>"+
@@ -230,7 +230,7 @@ function flyToMarker(e) {
     bus = bus.properties;
 
     let content = "<div class=''><div class='card'>"+
-    "<div class='card-h'><div class='card-content'> <img src='images/gsn.logostamp_blue.png' class='img'>"+
+    "<div class='card-h'><div class='card-content'> <img src='images/"+bus.logo+"' class='img'>"+
     "<div class='card-title-section' ><a class='link' href='"+bus.link+"'><b>"+bus.name +"</b></a>"+
     "<p>"+ bus.category+"</p></div></div></div>"+
     "<div class='card-info'>"+

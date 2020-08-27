@@ -14,30 +14,9 @@ body {
     font-size: calc(0.8em + 1vh);
 }
 
-
-.navbar {
-    background-color: var(--primary);
-    padding: 0.3em 1em;
-    display: flex;
-    align-items: center;
-}
-
-.navbar-nav {
-    list-style: none;
-    margin: 0px;
-}
-
-.navbar-nav > li {
-    list-style-type: none;
-}
-
-.navbar-nav > li > a {
-    text-decoration:none;
-    color:var(--white);
-}
-
 .row > .col-md-4 {
     padding:0px 8px !important;
+    margin-bottom: 0.5em;
 }
 
 .card {
@@ -47,6 +26,7 @@ body {
     padding: 0em;
     border-radius: 8px;
     box-shadow: 2px 2px 0.1em #ddd;
+    height: 100%;
 }
 
 .card-content {

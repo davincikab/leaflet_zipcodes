@@ -21,7 +21,8 @@
     <!-- Promise polyfill script required to use Mapbox GL Geocoder in IE 11 -->
     <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
-    </head>
+    <link rel="stylesheet" href="navbar.css">    
+</head>
     <body>
         <div class="container-fluid">
             <div class="search-section" id="side-tab">
@@ -330,7 +331,7 @@
 
                 if(isDirectionTabOpen) {
                     updateDestinationLayer(coords);
-                    
+
                     if(directionInfo.start.length == 0) {
 
                     }else {
@@ -495,8 +496,6 @@
 
             addRoute(geojson);            
         }
-
-
 
         // get schools within 20 miles from user location
         function getClosestPoint(center) {
