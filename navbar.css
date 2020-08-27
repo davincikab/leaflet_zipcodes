@@ -1,4 +1,15 @@
 
+:root {
+    --primary: #120D43;
+    --secondary: #178BF6;
+    --tertiary: #DBBA24;
+    --white:#fff;
+    --gray:rgba(234,237,239,.85);
+    --gray-2:#f7f8f9;
+    --black:#434a54;
+    --header-color:#9a9fa7;
+}
+
 .navbar {
     background-color: var(--primary);
     padding: 0.3em 1em;
@@ -22,6 +33,11 @@
 
 .navbar-brand {
     display: none;
+}
+
+.img-logo {
+    height: 6vh;
+    mix-blend-mode: screen;
 }
 
 @media (min-width:50em) {

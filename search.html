@@ -87,7 +87,8 @@
         var isDirectionTabOpen = false;
         var geolocateButton = document.getElementById('geolocate');
         var directionInfo = {
-            start:[-76.13310817917284, 40.24597497004339],
+            // start:[-76.13310817917284, 40.24597497004339],
+            start:[],
             destionation:[]
         };
 
@@ -159,6 +160,11 @@
             .then(res => res.json())
             .then(directions => {
                 console.log(directions);
+                if(directions.code != "Ok") {
+                    alert(directions.message);
+
+                    return;
+                }
 
                 var data = directions.routes[0];
                 var steps = data.legs[0].steps;
@@ -241,9 +247,9 @@
                 tripInstructions.push('<br><li>' + steps[i].maneuver.instruction) +
                 '</li>';
                 instructions.innerHTML =
-                '<br><span class="duration">Trip duration: ' +
+                '<br><span class="duration bold">Duration: ' +
                 Math.floor(data.duration / 60) +
-                ' min 🚴 </span>' +
+                ' min,  </span><span class="bold"> Distance '+ (data.distance/1600).toFixed(1)+' miles</span>' +
                 tripInstructions;
             }
         }
@@ -254,9 +260,14 @@
 
             console.log(bounds);
 
+            // get the device width
+
+            let width = window.innerWidth;
+
             // fit the bounds to the map
+            let paddingLeft = width < 798 ? 50 : 380;
             map.fitBounds(bounds, {
-                padding: {top: 50, bottom:50, left: 380, right: 50}
+                padding: {top: 50, bottom:50, left: paddingLeft, right: 50}
             });
         }
 
@@ -421,7 +432,7 @@
                 ) {
                     // add a tree emoji as a prefix for custom data results
                     // using carmen geojson format: https://github.com/mapbox/carmen/blob/master/carmen-geojson.md
-                    feature['place_name'] = '🌲 ' + feature.properties.name;
+                    feature['place_name'] = ' 🥋 ' + feature.properties.name;
                     feature['center'] = feature.geometry.coordinates;
                     feature['place_type'] = ['park'];
                     matchingFeatures.push(feature);

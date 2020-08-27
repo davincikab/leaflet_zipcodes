@@ -299,8 +299,8 @@ map.on("load", function(e) {
 window.onresize = function(e) {
     console.log(e);
     if(!isMainPage) {
-        if(filterData.length == 0) {
-            filterData == searchData;
+        if(!filterData || filterData.length == 0) {
+            filterData = searchData;
         }
 
         cleanFilterData(filterData);

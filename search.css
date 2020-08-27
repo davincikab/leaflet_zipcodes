@@ -321,6 +321,10 @@ body {
     width: 100% !important;
 }
 
+.bold {
+    font-weight: 700;
+}
+
 /* Media Queries */
 @media (min-width:50em) {
     body {
@@ -417,6 +421,7 @@ body {
     .mapboxgl-ctrl-bottom-left {
         bottom: 0;
         left: 360px !important;
+        transition: left .25s cubic-bezier(.6,.1,.27,1.02),-webkit-transform .25s cubic-bezier(.6,.1,.27,1.02);
     }
 
     .mapboxgl-ctrl-bottom-left.logo-open {
