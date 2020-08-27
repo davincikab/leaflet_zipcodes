@@ -83,6 +83,7 @@
         var isMainPage = false;
         var userLocation = [];
         var proximityDistance = 20;
+        var isDirectionTabOpen = false;
         var geolocateButton = document.getElementById('geolocate');
         var directionInfo = {
             start:[-76.13310817917284, 40.24597497004339],
@@ -223,7 +224,10 @@
             popup.remove();
 
             // zoom to street layer
-            fitToRouteBounds(geojson);
+            if(geojson.geometry.coordinates.length != 0) {
+                fitToRouteBounds(geojson);
+            }
+            
         }
 
         // add directions
@@ -251,7 +255,7 @@
 
             // fit the bounds to the map
             map.fitBounds(bounds, {
-                padding: {top: 10, bottom:5, left: 10, right: 5}
+                padding: {top: 50, bottom:50, left: 380, right: 50}
             });
         }
 
@@ -277,10 +281,16 @@
 
         closeButton.addEventListener('click', function(e) {
             directionTab.classList.add("close");
+
+            isDirectionTabOpen = false;
+            updateRoute([]);
+            updateStartLayer([]);
+            updateDestinationLayer([]);
         });
 
         openDirection.addEventListener('click', function(e) {
            toggleDirectionTab();
+           isDirectionTabOpen = true;
         });
 
         function toggleDirectionTab() {
@@ -318,24 +328,21 @@
                     ]
                 };
 
-                updateDestionationLayer(coords);
+                if(isDirectionTabOpen) {
+                    updateDestinationLayer(coords);
+                    
+                    if(directionInfo.start.length == 0) {
 
-                if(directionInfo.start.length == 0) {
-
-                }else {
-                    getDirections(directionInfo, "driving");
+                    }else {
+                        getDirections(directionInfo, "driving");
+                    }
                 }
+                
             });
         });
 
         function updateStartLayer(coords) {
-            if (map.getLayer('start')) {
-                map.getSource('start').setData(end);
-            } else {
-                map.addLayer({
-                'id': 'start',
-                'type': 'circle',
-                'source': {
+            let source = {
                     'type': 'geojson',
                     'data': {
                     'type': 'FeatureCollection',
@@ -350,7 +357,15 @@
                         }
                     ]
                     }
-                },
+            };
+
+            if (map.getLayer('start')) {
+                map.getSource('start').setData(source.data);
+            } else {
+                map.addLayer({
+                'id': 'start',
+                'type': 'circle',
+                'source': source,
                 'paint': {
                     'circle-radius': 10,
                     'circle-color': '#00ff00'
@@ -359,14 +374,8 @@
             }
         }
 
-        function updateDestionationLayer(coords) {
-            if (map.getLayer('end')) {
-                map.getSource('end').setData(end);
-            } else {
-                map.addLayer({
-                'id': 'end',
-                'type': 'circle',
-                'source': {
+        function updateDestinationLayer(coords) {
+            let source = {
                     'type': 'geojson',
                     'data': {
                     'type': 'FeatureCollection',
@@ -381,7 +390,15 @@
                         }
                     ]
                     }
-                },
+            };
+
+            if (map.getLayer('end')) {
+                map.getSource('end').setData(source.data);
+            } else {
+                map.addLayer({
+                'id': 'end',
+                'type': 'circle',
+                'source': source,
                 'paint': {
                     'circle-radius': 10,
                     'circle-color': '#f30'
@@ -451,10 +468,9 @@
         geocoderTwo.addTo('#destination');
 
         geocoderTwo.on("result", function(result) {
-            console.log(result);
             directionInfo.stop = result.result.center;
 
-            updateDestionationLayer(directionInfo.stop);
+            updateDestinationLayer(directionInfo.stop);
 
             if(directionInfo.start.length != 0) {
                 getDirections(directionInfo, "driving");
@@ -462,6 +478,7 @@
         });
 
         geocoderTwo.on('loading', function(query) {
+            console.log(query);
             updateRoute();
         });
 
@@ -472,7 +489,7 @@
                 'properties': {},
                 'geometry': {
                     'type': 'LineString',
-                        'coordinates': route
+                        'coordinates': []
                 }
             };
 

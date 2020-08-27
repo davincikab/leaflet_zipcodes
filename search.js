@@ -80,18 +80,18 @@ function cleanFilterData(filterData) {
             let st = getComputedStyle(sd);
 
             if(st.display != "none") {
-                sd.innerHTML = '<div class="empty-result py-3 px-1 text-center"><small class="text-center"><b>No result found</b></small><br>'+
-                    '<a class="btn btn-cust mr-3" href="become_partner.html">Add Your Business</a><small> '+
-                    'No Partners in Your Area ? </small><a href="about.html" class="">About</a></div>';
+                sd.innerHTML = '<div class="empty-result py-3 px-1 text-left"><p class="text-center"><b>No result found</b></p>'+
+                    '<a class="btn btn-cust mr-3" href="become_partner.html">Add Your Business</a><p> '+
+                    'No Partners in Your Area ? <a href="about.html" class="">About</a></p></div>';
             }
         })
         
         return;
     } else {
         if(filterData.length == 0) {
-            result.innerHTML = '<div class="empty-result py-3 px-1 text-center"><small class="text-center"><b>No result found</b></small><br>'+
-                '<a class="btn btn-cust mr-3" href="become_partner.html">Add Your Business</a><small> '+
-                'No Partners in Your Area ? </small><a href="about.html" class="">About</a></div>';
+            result.innerHTML = '<div class="empty-result py-3 px-1 text-left"><p class="text-center"><b>No result found</b></p>'+
+                '<a class="btn btn-cust mr-3" href="become_partner.html">Add Your Business</a><p> '+
+                'No Partners in Your Area ? <a href="about.html" class="">About</a></p></div>';
 
             return;
         }
@@ -264,6 +264,10 @@ function getDirection(destination) {
     geocoderOne.setInput(directionInfo.start);
     geocoderTwo.setInput(directionInfo.stop);
 
+    // update 
+    updateDestinationLayer(directionInfo.stop);
+    updateStartLayer(directionInfo.start);
+
     // call get direction method
     getDirections(directionInfo, "driving");
 
@@ -295,9 +299,9 @@ map.on("load", function(e) {
 window.onresize = function(e) {
     console.log(e);
     if(!isMainPage) {
-        // if(filterData.length == 0) {
-        //     filterData == searchData;
-        // }
+        if(filterData.length == 0) {
+            filterData == searchData;
+        }
 
         cleanFilterData(filterData);
     }
