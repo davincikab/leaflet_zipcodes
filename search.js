@@ -40,6 +40,10 @@ function convertToGeoJson(csvData) {
 // Search bar event listener
 searchBar.addEventListener('input', function(e) {
     console.log(this.value);
+    // close direction tabs
+    directionTab.classList.add("close");
+
+    // geocode
     forwardGeocoder(this.value);
 });
 
@@ -287,7 +291,7 @@ class LogoControl {
         this._map = map;
         this._container = document.createElement('div');
         this._container.className = 'mapboxgl-ctrl';
-        this._container.innerHTML = "<a class='' href='https://groundstandard.com'><img src='images/gsn.logostamp_blue.png' class='img'></a>";
+        this._container.innerHTML = "<a class='' href='/index.html'><img src='images/gsn.logostamp_blue.png' class='img'></a>";
         return this._container;
     }
     

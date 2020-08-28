@@ -17,7 +17,7 @@
 
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a href="" class="nav-item">
+                <a href="index.html" class="nav-item">
                    <!-- theGroundStandard -->
                    <img src="images/wall-logo_small.jpg" alt="logo-2" class="img-logo">
                 </a>
@@ -45,13 +45,15 @@
         // 
         function createCards(data) {
             data.forEach(bus => {
-                patners.innerHTML += "<div class='col-md-4'><div class='card'>"+
+                patners.innerHTML += "<div class='col-md-3'><div class='card'>"+
                     "<div class='card-h'><div class='card-content'><img src='images/"+bus.logo+"' class='img'>"+
                     "<div><a class='link' href='/www."+bus.link+"'><b>"+bus.name +"</b></a>"+
                     "<p>"+ bus.category+"</p></div></div></div>"+
-                    "<div class='card-info'>"+
-                    "<p class='item'><button class='btn'>Get Directions</button><button class='btn'>Seee Class Times</button></p>"+
-                    "<p class='item'><span></span>"+bus.address+"</p></div>"+
+                    "<div class='card-info'><p class='item'><span></span>"+bus.address+"</p>"+
+                    "<p class='item'>"+
+                    "<button class='btn btn-primary btn-sm'>Get Directions</button>"+
+                    "<button class='btn btn-primary btn-sm'>Class Times</button></p>"+
+                    "</div>"+
                     "</div></div>";
             });
         }
