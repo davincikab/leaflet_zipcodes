@@ -20,6 +20,7 @@
 .navbar-nav {
     list-style: none;
     margin: 0px;
+    margin-left: 30%;
 }
 
 .navbar-nav > li {
@@ -41,7 +42,15 @@
 }
 
 @media (min-width:50em) {
+    .navbar{
+        justify-content: right;
+    }
     .navbar-brand {
         display: block;
+    }
+
+    .navbar-nav{    
+        justify-content: start;
+        margin-left: 30%;
     }
 }

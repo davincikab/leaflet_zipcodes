@@ -240,6 +240,9 @@ function flyToMarker(e) {
     "</div></div>";
 
     // open popup
+    if(isMainPage) {
+        return ;
+    }
     popup.setLngLat(coordinates)
         .setHTML(content)
         .setMaxWidth("300px")
@@ -251,7 +254,6 @@ function flyToMarker(e) {
 function getDirection(destination) {
     // update the start with user location or start location
     console.log(destination);
-
     directionInfo.stop = destination;
     // if(userLocation.length > 0) {
     //     directionInfo.start = userLocation;
@@ -259,6 +261,11 @@ function getDirection(destination) {
     //     alert("provide user location");
     //     return;
     // }
+
+    if(directionInfo.start.length == 0) {
+        alert('Kindly allow geolocation in your device');
+        return;
+    }
 
     // update the geocoder input
     geocoderOne.setInput(directionInfo.start);
