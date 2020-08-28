@@ -46,6 +46,7 @@ body {
     padding: 0.2em 0.5em;
     /* margin: 0.2em 0.8em; */
     background-color: var(--gray);
+    height: 40%;
 }
 
 .card-h > p {
@@ -64,6 +65,13 @@ body {
 
 .item > span {
     font-weight: 600;
+}
+
+.item .btn {
+    background-color: #7c6a88af;
+    color: white;
+    margin-right: 0.8em;
+    margin-top: 0.2em;
 }
 
 .link {
