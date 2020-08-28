@@ -234,9 +234,10 @@ function flyToMarker(e) {
     "<div class='card-title-section' ><a class='link' href='"+bus.link+"'><b>"+bus.name +"</b></a>"+
     "<p>"+ bus.category+"</p></div></div></div>"+
     "<div class='card-info'>"+
-    "<p class='item'><span></span> "+bus.phone_number+"</p>"+
+    // "<p class='item'><span></span> "+bus.phone_number+"</p>"+
     "<p class='item'><span></span>"+bus.address+"</p>"+
-    "<button class='btn btn-sm btn-primary' onClick='getDirection(["+coordinates+"])'>Get Direction</button></div>"+
+    "<button class='btn btn-sm btn-primary' onClick='getDirection(["+coordinates+"])'>Directions</button>"+
+    "<button class='btn btn-sm btn-primary ml-2'>Class Times</button></div>"+
     "</div></div>";
 
     // open popup
@@ -245,7 +246,7 @@ function flyToMarker(e) {
     }
     popup.setLngLat(coordinates)
         .setHTML(content)
-        .setMaxWidth("300px")
+        .setMaxWidth("250px")
         .addTo(map);
 
     console.log(coordinates);

@@ -213,8 +213,8 @@ body {
     border-right: 0px;
     border-style: solid;
     border-color: var(--gray);
-    padding: 0.2em 0.5em;
-    margin: 0.2em 0.8em;
+    padding: 0em 0em 0em 0.2em;
+    /* margin: 0.2em 0.8em; */
 }
 
 .card-h > p {
@@ -433,7 +433,7 @@ body {
     }
 
     .mapboxgl-popup-content {
-        width: 300px !important;
+        width: 250px !important;
     }
 
     .directions {
