@@ -203,7 +203,7 @@ body {
 }
 
 .mapboxgl-popup-content {
-    width: 180px !important;
+    width: 250px !important;
 }
 
 .card-h {
@@ -368,7 +368,7 @@ body {
 
     .side-section {
         top: 22%;
-        left: 1%;
+        left: 0%;
         height: 76vh;
         padding:0px 0.6em;
         z-index: 1;

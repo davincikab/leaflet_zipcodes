@@ -14,7 +14,7 @@ body {
     font-size: calc(0.8em + 1vh);
 }
 
-.row > .col-md-3 {
+.row > .col-md-4 {
     padding:0px 8px !important;
     margin-bottom: 0.5em;
 }
@@ -26,7 +26,7 @@ body {
     padding: 0em;
     border-radius: 8px;
     box-shadow: 2px 2px 0.1em #ddd;
-    height: 90%;
+    height: 92%;
 }
 
 .card-content {
@@ -46,7 +46,7 @@ body {
     padding: 0.2em 0.5em;
     /* margin: 0.2em 0.8em; */
     background-color: var(--gray);
-    height: 40%;
+    height: 55%;
 }
 
 .card-h > p {
