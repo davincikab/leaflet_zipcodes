@@ -2,6 +2,7 @@ var searchBar = document.getElementById('location-bar');
 var result = document.getElementById('result');
 var sideSection = document.querySelectorAll('.side-section');
 var filterData;
+var isFilterMode = false;
 var searchData;
 var locationMarker;
 var popup = new mapboxgl.Popup({anchor:"top", closeOnMove:false, closeOnClick:false})
@@ -42,6 +43,9 @@ searchBar.addEventListener('input', function(e) {
     console.log(this.value);
     // close direction tabs
     directionTab.classList.add("close");
+
+    
+    isFilterMode = true;
 
     // geocode
     forwardGeocoder(this.value);
@@ -326,7 +330,7 @@ window.onresize = function(e) {
     console.log(e);
     if(!isMainPage) {
         if(!filterData || filterData.length == 0) {
-            filterData = searchData;
+            filterData = [];
         }
 
         cleanFilterData(filterData);
