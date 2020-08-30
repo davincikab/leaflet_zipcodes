@@ -91,7 +91,7 @@ function cleanFilterData(filterData) {
                 sd.innerHTML = '<div class="empty-result py-3 px-1 text-left"><p class="text-center"><b>No result found</b></p>'+
                     '<p>No Partners in Your Area ?<br> '+
                     '<a class="btn btn-cust mr-3" href="become_partner.html">Add Your Business</a>'+
-                    '<a href="about.html" class="btn btn-cust">About</a></p></div>';
+                    '<a href="about.html" class="btn btn-cust btn-sm">About</a></p></div>';
             }
         });
         

@@ -67,11 +67,14 @@ body {
     font-weight: 600;
 }
 
+
 .item .btn {
     /* background-color: #7c6a88af; */
     color: white;
     margin-right: 0.8em;
     margin-top: 0.2em;
+    margin-bottom: 1em;
+    font-size: 0.8em;
 }
 
 .link {
