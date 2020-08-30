@@ -61,6 +61,7 @@ function forwardGeocoder(query) {
             return;
         }
 
+        filterData = searchData;
         createListItems(searchData);
         return;
     }
