@@ -163,11 +163,15 @@ body {
 
 .empty-result > p {
     margin-bottom: 0.3rem;
+    margin-left: 0.5em;
 }
 
 .btn-cust {
     background-color: var(--secondary);
     color: white;
+    font-size: 0.7em;
+    padding: .2rem .3rem;
+    text-transform: uppercase;
 }
 
 .mapboxgl-ctrl-bottom-left {
@@ -240,6 +244,12 @@ body {
 
 .item > span {
     font-weight: 600;
+}
+
+.card-info .btn {
+    font-size: 0.78em;
+    padding: .2rem .3rem;
+    text-transform: uppercase;
 }
 
 .link {
@@ -448,5 +458,15 @@ body {
         width:360px;
         top: 20%;
         height: 78vh;
+    }
+
+    .btn-cust {
+        font-size: 0.75em;
+        padding: .22rem .4rem;
+    }
+     
+    .item .btn {
+        font-size: 0.7em;
+        padding: .2rem .3rem;
     }
 }
