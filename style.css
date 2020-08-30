@@ -206,7 +206,7 @@ body {
 /* Media Queries */
 @media (min-width:50em) {
     .section-links {
-        max-width:55%;
+        max-width:66%;
     }
     .panel-title {
         font-size: 1.125em;
