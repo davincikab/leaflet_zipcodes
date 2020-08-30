@@ -82,8 +82,8 @@ function forwardGeocoder(query) {
     
 }
 
-function cleanFilterData(filterData) {
-    if(filterData.length == 0 && !isMainPage) {
+function cleanFilterData(data) {
+    if(data.length == 0 && !isMainPage) {
         sideSection.forEach(sd => {
             let st = getComputedStyle(sd);
 
@@ -97,7 +97,7 @@ function cleanFilterData(filterData) {
         
         return;
     } else {
-        if(filterData.length == 0) {
+        if(data.length == 0) {
             result.innerHTML = '<div class="empty-result py-3 px-1 text-left"><p class="text-center"><b>No result found</b></p>'+
                 '<p>No Partners in Your Area ?'+
                 ' <a class="btn btn-sm btn-cust mr-3" href="become_partner.html">Add Your Business</a><a href="about.html" class="">About</a></p></div>';
@@ -110,9 +110,9 @@ function cleanFilterData(filterData) {
 
     // 
     if(isMainPage) {
-        createListGroupItems(JSON.parse(JSON.stringify(filterData)));
+        createListGroupItems(JSON.parse(JSON.stringify(data)));
     } else {
-        createListItems(JSON.parse(JSON.stringify(filterData)));
+        createListItems(JSON.parse(JSON.stringify(data)));
     }
 }
 
@@ -328,13 +328,12 @@ map.on("load", function(e) {
 
 window.onresize = function(e) {
     console.log(e);
-    if(!isMainPage) {
-        if(!filterData || filterData.length == 0) {
-            filterData = [];
-        }
-
+    if(!filterData) {
+        cleanFilterData(searchData);
+    } else {
         cleanFilterData(filterData);
     }
+ 
 }
 
 var event = document.createEvent('Event');
