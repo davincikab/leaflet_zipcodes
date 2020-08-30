@@ -211,18 +211,18 @@ function flyToMarker(e) {
     }
 
     // update the input element
-    searchBar.value = this.innerText;
+    let titleElem = this.querySelector('.title');
+    console.log(titleElem.innerText);
 
+    searchBar.value = titleElem.innerText;
+
+
+    searchBar.dispatchEvent(event);
+    
     map.flyTo({
         center:coordinates,
         zoom:12
     });
-
-    // add a marker
-    // if(locationMarker) {
-    //     locationMarker.setLngLat(coordinates);
-    //     return;
-    // }
 
     locationMarker = new mapboxgl.Marker()
         .setLngLat(coordinates)
@@ -332,3 +332,6 @@ window.onresize = function(e) {
         cleanFilterData(filterData);
     }
 }
+
+var event = document.createEvent('Event');
+event.initEvent('input', true, true);
