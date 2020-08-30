@@ -71,6 +71,10 @@ body {
     transition: transform  .25s cubic-bezier(.6,.1,.27,1.02),-webkit-transform .25s cubic-bezier(.6,.1,.27,1.02);
 }
 
+#search.close {
+    display: none;
+}
+
 .search-section.side-tab-close {
     transform:translateX(-360px);
 }
@@ -197,7 +201,6 @@ body {
 
 .card-content {
     display: flex;
-    /* justify-content: space-between; */
     align-items: center;
     flex-direction: row;
 }
@@ -360,6 +363,10 @@ body {
         border-top-right-radius: 16px;
         border-bottom-right-radius: 16px;
         box-shadow: 0 2px 20px rgba(0,0,0,.5);
+    }
+
+    #search {
+        display: flex;
     }
 
     .list-group .card-header {

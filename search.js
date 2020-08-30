@@ -232,7 +232,8 @@ function flyToMarker(e) {
 
     console.log(bus);
     bus = bus.properties;
-
+    let directionProps = "["+coordinates+"],"+"\""+bus.address+"\"";
+    
     let content = "<div class=''><div class='card'>"+
     "<div class='card-h'><div class='card-content'> <img src='images/"+bus.logo+"' class='img'>"+
     "<div class='card-title-section' ><a class='link' href='"+bus.link+"'><b>"+bus.name +"</b></a>"+
@@ -240,7 +241,7 @@ function flyToMarker(e) {
     "<div class='card-info'>"+
     // "<p class='item'><span></span> "+bus.phone_number+"</p>"+
     "<p class='item'><span></span>"+bus.address+"</p>"+
-    "<button class='btn btn-sm btn-primary' onClick='getDirection(["+coordinates+"])'>Directions</button>"+
+    "<button class='btn btn-sm btn-primary' onClick='getDirection("+directionProps+")'>Directions</button>"+
     "<button class='btn btn-sm btn-primary ml-2'>Class Times</button></div>"+
     "</div></div>";
 
@@ -256,10 +257,10 @@ function flyToMarker(e) {
     console.log(coordinates);
 }
 
-function getDirection(destination) {
+function getDirection(destination, address) {
     // update the start with user location or start location
-    console.log(destination);
-    directionInfo.stop = destination;
+    console.log(address);
+    directionInfo.stop = destination.reverse();
     // if(userLocation.length > 0) {
     //     directionInfo.start = userLocation;
     // } else {
@@ -267,23 +268,30 @@ function getDirection(destination) {
     //     return;
     // }
 
+    toggleDirectionTab();
+    toggleSearchTab();
+
     if(directionInfo.start.length == 0) {
-        alert('Kindly allow geolocation in your device');
-        return;
+        alert('Kindly allow geolocation in your device or provide a starting point');
+        // return;
+    } else {
+         // update the geocoder input
+        geocoderOne.setInput(directionInfo.start);
+        geocoderOne.query(directionInfo.start);
     }
 
-    // update the geocoder input
-    geocoderOne.setInput(directionInfo.start);
-    geocoderTwo.setInput(directionInfo.stop);
+    geocoderTwo.setInput(address);
+    geocoderTwo.query(address);
 
     // update 
     updateDestinationLayer(directionInfo.stop);
     updateStartLayer(directionInfo.start);
 
-    // call get direction method
-    getDirections(directionInfo, "driving");
-
-    toggleDirectionTab();
+    if(directionInfo.start.length == 2 && directionInfo.stop.length) {
+        // call get direction method
+        getDirections(directionInfo, "driving");
+    }
+    
 }
 
 class LogoControl {

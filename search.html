@@ -26,7 +26,7 @@
     <body>
         <div class="container-fluid">
             <div class="search-section" id="side-tab">
-                <div class="input-group">
+                <div class="input-group" id="search">
                     <input type="text" class="form-control" 
                         aria-label="Location" id="location-bar" placeholder="Search">
 
@@ -86,6 +86,8 @@
         var proximityDistance = 20;
         var isDirectionTabOpen = false;
         var geolocateButton = document.getElementById('geolocate');
+        var searchSection = document.getElementById("search");
+
         var directionInfo = {
             // start:[-76.13310817917284, 40.24597497004339],
             start:[],
@@ -124,7 +126,9 @@
 
             // update user location
             directionInfo.start = [...location].reverse();
+
             geocoderOne.setInput([...location].toString());
+            geocoderOne.query([...location].toString())
 
             userLocation = [...location].reverse();
 
@@ -296,18 +300,26 @@
             directionTab.classList.add("close");
 
             isDirectionTabOpen = false;
+
+            toggleSearchTab();
             updateRoute([]);
             updateStartLayer([]);
             updateDestinationLayer([]);
         });
 
         openDirection.addEventListener('click', function(e) {
+           toggleSearchTab();
            toggleDirectionTab();
+           
            isDirectionTabOpen = true;
         });
 
         function toggleDirectionTab() {
             directionTab.classList.remove("close");
+        }
+
+        function toggleSearchTab() {
+            searchSection.classList.toggle('close');
         }
 
         // Bravabobby@gmail.com
@@ -326,6 +338,7 @@
 
                 // geocode the coordinates
                 geocoderTwo.setInput([...coords].reverse().toString());
+                geocoderTwo.query([...coords].reverse().toString());
                 
                 var end = {
                     'type': 'FeatureCollection',
