@@ -42,6 +42,11 @@
     mix-blend-mode: screen;
 }
 
+.btn-cust {
+    text-transform: uppercase;
+    font-size: 0.8em;
+}
+
 @media (min-width:50em) {
     .navbar{
         justify-content: right;

@@ -85,17 +85,18 @@ function cleanFilterData(filterData) {
 
             if(st.display != "none") {
                 sd.innerHTML = '<div class="empty-result py-3 px-1 text-left"><p class="text-center"><b>No result found</b></p>'+
-                    '<a class="btn btn-cust mr-3" href="become_partner.html">Add Your Business</a><p> '+
-                    'No Partners in Your Area ? <a href="about.html" class="">About</a></p></div>';
+                    '<p>No Partners in Your Area ?<br> '+
+                    '<a class="btn btn-cust mr-3" href="become_partner.html">Add Your Business</a>'+
+                    '<a href="about.html" class="btn btn-cust">About</a></p></div>';
             }
-        })
+        });
         
         return;
     } else {
         if(filterData.length == 0) {
             result.innerHTML = '<div class="empty-result py-3 px-1 text-left"><p class="text-center"><b>No result found</b></p>'+
-                '<a class="btn btn-cust mr-3" href="become_partner.html">Add Your Business</a><p> '+
-                'No Partners in Your Area ? <a href="about.html" class="">About</a></p></div>';
+                '<p>No Partners in Your Area ?'+
+                ' <a class="btn btn-sm btn-cust mr-3" href="become_partner.html">Add Your Business</a><a href="about.html" class="">About</a></p></div>';
 
             return;
         }
@@ -272,16 +273,21 @@ function getDirection(destination, address) {
     toggleSearchTab();
 
     if(directionInfo.start.length == 0) {
-        alert('Kindly allow geolocation in your device or provide a starting point');
+        // alert('Kindly allow geolocation in your device or provide a starting point');
         // return;
     } else {
+
+        clearInstructionsDiv();
+
          // update the geocoder input
-        geocoderOne.setInput(directionInfo.start);
-        geocoderOne.query(directionInfo.start);
+        let start = directionInfo.start;
+        geocoderOne.setInput(start[1] +", "+ start[0]);
+        geocoderOne.query(start[1] +", "+ start[0]);
     }
 
     geocoderTwo.setInput(address);
     geocoderTwo.query(address);
+
 
     // update 
     updateDestinationLayer(directionInfo.stop);

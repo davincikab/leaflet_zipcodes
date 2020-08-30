@@ -87,11 +87,12 @@
         var isDirectionTabOpen = false;
         var geolocateButton = document.getElementById('geolocate');
         var searchSection = document.getElementById("search");
+        var instructions = document.getElementById('instructions');
 
         var directionInfo = {
             // start:[-76.13310817917284, 40.24597497004339],
             start:[],
-            destionation:[]
+            stop:[]
         };
 
         mapboxgl.accessToken = 'pk.eyJ1IjoiYmVubnl0cm92YXRvIiwiYSI6ImNrZDcwdTVwbTE4amEyem8yZWdkNHN3ZmoifQ.r3Llqtnwfqqju2zfzE-fvA';
@@ -128,7 +129,7 @@
             directionInfo.start = [...location].reverse();
 
             geocoderOne.setInput([...location].toString());
-            geocoderOne.query([...location].toString())
+            geocoderOne.query([...location].toString());
 
             userLocation = [...location].reverse();
 
@@ -166,8 +167,7 @@
             .then(directions => {
                 console.log(directions);
                 if(directions.code != "Ok") {
-                    alert(directions.message);
-
+                    throw new Error(directions.message);
                     return;
                 }
 
@@ -194,6 +194,8 @@
 
             })
             .catch(error => {
+                instructions.innerHTML = "<p class='text-danger'>"+error.message+"</p>";
+
                 console.log(error);
             });
         }
@@ -245,8 +247,6 @@
         // add directions
         function addDirection(steps, data) {
             // console
-            var instructions = document.getElementById('instructions');
-
             var tripInstructions = [];
             for (var i = 0; i < steps.length; i++) {
                 tripInstructions.push('<br><li>' + steps[i].maneuver.instruction) +
@@ -257,6 +257,10 @@
                 ' min,  </span><span class="bold"> Distance '+ (data.distance/1600).toFixed(1)+' miles</span>' +
                 tripInstructions;
             }
+        }
+
+        function clearInstructionsDiv() {
+            instructions.innerHTML = "";
         }
 
         function fitToRouteBounds(route) {
@@ -310,7 +314,7 @@
         openDirection.addEventListener('click', function(e) {
            toggleSearchTab();
            toggleDirectionTab();
-           
+
            isDirectionTabOpen = true;
         });
 
@@ -320,6 +324,18 @@
 
         function toggleSearchTab() {
             searchSection.classList.toggle('close');
+        }
+
+        function toggleSuggestions() {
+            let suggestionDivs = document.querySelectorAll(".suggestions");
+
+            suggestionDivs.forEach(div => {
+                let style = getComputedStyle(div);
+
+                if(style.display != "none") {
+                    div.style.display = "none";
+                }
+            }); 
         }
 
         // Bravabobby@gmail.com
@@ -466,6 +482,11 @@
 
         geocoderOne.addTo('#start');
 
+
+        geocoderOne.on("clear", function(e) {
+            clearInstructionsDiv();
+        });
+
         // update start
         geocoderOne.on("result", function(result) {
             console.log(result);
@@ -476,6 +497,9 @@
             if(directionInfo.stop.length != 0) {
                 getDirections(directionInfo, "driving");
             }
+
+            // clearInstructionsDiv();
+            toggleSuggestions();
         });
 
         geocoderOne.on('loading', function(query) {
@@ -501,6 +525,13 @@
             if(directionInfo.start.length != 0) {
                 getDirections(directionInfo, "driving");
             }
+
+            // clearInstructionsDiv();
+            toggleSuggestions();
+        });
+
+        geocoderTwo.on("clear", function(e) {
+            clearInstructionsDiv();
         });
 
         geocoderTwo.on('loading', function(query) {
