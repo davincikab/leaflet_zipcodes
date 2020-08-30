@@ -61,12 +61,12 @@ function forwardGeocoder(query) {
             return;
         }
 
-        filterData = searchData;
+        filterData = JSON.parse(JSON.stringify(searchData));
         createListItems(searchData);
         return;
     }
 
-    filterData = searchData;
+    filterData = JSON.parse(JSON.stringify(searchData));
 
     filterData = filterData.filter(item => {
         if(
