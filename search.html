@@ -290,10 +290,15 @@
 
         toggleButton.addEventListener('click', function(e) {
             sidetab.classList.toggle('side-tab-close');
+
+            // toggleDirectionTab();
+           
+
             logoControlSection.classList.toggle('logo-open');
 
             // condition on direction tab
             if(!directionTab.classList.contains("close")) {
+                toggleSearchTab();
                 directionTab.classList.toggle("close");
             }
 
