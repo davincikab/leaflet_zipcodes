@@ -131,7 +131,7 @@ function createMarkers(businessdata) {
         // "<p class='item'><span></span> "+bus.phone_number+"</p>"+
         "<p class='item'><span></span>"+business.properties.address+"</p>"+
         "<button class='btn btn-sm btn-primary' onClick='getDirection("+directionProps+")'>Directions</button>"+
-        "<button class='btn btn-sm btn-primary ml-2'>Class Times</button></div>"+
+        "<a class='btn btn-sm btn-primary ml-2' href='class_times.html'>Class Times</a></div>"+
         "</div></div>";
 
         var popup = new mapboxgl.Popup()
@@ -280,7 +280,7 @@ function flyToMarker(e) {
     // "<p class='item'><span></span> "+bus.phone_number+"</p>"+
     "<p class='item'><span></span>"+bus.address+"</p>"+
     "<button class='btn btn-sm btn-primary' onClick='getDirection("+directionProps+")'>Directions</button>"+
-    "<button class='btn btn-sm btn-primary ml-2'>Class Times</button></div>"+
+    "<a class='btn btn-sm btn-primary ml-2' href='class_times.html'>Class Times</a></div>"+
     "</div></div>";
 
     // open popup
