@@ -9,6 +9,7 @@ body {
     box-sizing: border-box;
     margin: 0;
     font-size: calc(0.8em + 1vh);
+    overflow:hidden;
 }
 
 
@@ -52,6 +53,7 @@ body {
     z-index: 0;
     background-image: url(images/bg-imge.png);
     background-size: cover;
+    background-position: center;
 }
 
 .mapboxgl-ctrl-logo {
