@@ -338,6 +338,14 @@ body {
     font-weight: 700;
 }
 
+.mapboxgl-marker{
+    cursor: pointer;
+}
+
+.mapboxgl-ctrl-group:not(:empty) {
+    display: none;
+}
+
 /* Media Queries */
 @media (min-width:50em) {
     body {
@@ -468,5 +476,8 @@ body {
     .item .btn {
         font-size: 0.7em;
         padding: .2rem .3rem;
+    }
+    .mapboxgl-ctrl-group:not(:empty) {
+        display: block;
     }
 }

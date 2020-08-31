@@ -30,11 +30,11 @@
                     <input type="text" class="form-control" 
                         aria-label="Location" id="location-bar" placeholder="Search">
 
-                    <div class="input-group-prepend" id="toggle-direction">
+                    <!-- <div class="input-group-prepend" id="toggle-direction">
                         <span class="input-prepend-text">
                             <i class="fa fa-level-down"></i>
                         </span>
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="geolocate" id="geolocate">
@@ -88,9 +88,9 @@
         var geolocateButton = document.getElementById('geolocate');
         var searchSection = document.getElementById("search");
         var instructions = document.getElementById('instructions');
+        var isPopupOpenEvent = false;
 
         var directionInfo = {
-            // start:[-76.13310817917284, 40.24597497004339],
             start:[],
             stop:[]
         };
@@ -316,12 +316,12 @@
             updateDestinationLayer([]);
         });
 
-        openDirection.addEventListener('click', function(e) {
-           toggleSearchTab();
-           toggleDirectionTab();
+        // openDirection.addEventListener('click', function(e) {
+        //    toggleSearchTab();
+        //    toggleDirectionTab();
 
-           isDirectionTabOpen = true;
-        });
+        //    isDirectionTabOpen = true;
+        // });
 
         function toggleDirectionTab() {
             directionTab.classList.remove("close");
@@ -348,18 +348,23 @@
 
         map.on("load", function(e) {
             map.on('click', function(e) {
+                console.log('map click');
                 // 
+                if(isPopupOpenEvent) {
+                    return;
+                };
+
                 var coordsObj = e.lngLat;
                 canvas.style.cursor = '';
                 var coords = Object.keys(coordsObj).map(function(key) {
                     return coordsObj[key];
                 });
 
-                directionInfo.stop = coords;
+                directionInfo.start = coords;
 
                 // geocode the coordinates
-                geocoderTwo.setInput([...coords].reverse().toString());
-                geocoderTwo.query([...coords].reverse().toString());
+                geocoderOne.setInput([...coords].reverse().toString());
+                geocoderOne.query([...coords].reverse().toString());
                 
                 var end = {
                     'type': 'FeatureCollection',
@@ -376,9 +381,10 @@
                 };
 
                 if(isDirectionTabOpen) {
-                    updateDestinationLayer(coords);
+                    // if()
+                    updateStartLayer(coords);
 
-                    if(directionInfo.start.length == 0) {
+                    if(directionInfo.stop.length == 0) {
 
                     }else {
                         getDirections(directionInfo, "driving");
@@ -490,6 +496,11 @@
 
         geocoderOne.on("clear", function(e) {
             clearInstructionsDiv();
+
+            updateStartLayer([]);
+            updateRoute([]);
+
+            directionInfo.start = [];
         });
 
         // update start
@@ -537,6 +548,10 @@
 
         geocoderTwo.on("clear", function(e) {
             clearInstructionsDiv();
+            updateDestinationLayer([]);
+            updateRoute();
+
+            directionInfo.stop = [];
         });
 
         geocoderTwo.on('loading', function(query) {

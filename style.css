@@ -71,7 +71,7 @@ body {
 .section-links {
    padding:  2em 1em;
    max-width: 1080px;
-   margin: 3em auto 0em;
+   margin: 0em auto 0em;
 }
 
 .search-tab {
@@ -209,6 +209,7 @@ body {
 @media (min-width:50em) {
     .section-links {
         max-width:66%;
+        margin: 3em auto 0em;
     }
     .panel-title {
         font-size: 1.125em;

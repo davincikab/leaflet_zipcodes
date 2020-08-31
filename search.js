@@ -120,11 +120,43 @@ function cleanFilterData(data) {
 
 function createMarkers(businessdata) {
     businessdata.features.forEach(business => {
-        
-        new mapboxgl.Marker()
+        let coordinates = business.geometry.coordinates;
+        let directionProps = "["+coordinates+"],"+"\""+business.properties.address+"\"";
+
+        var popupContent = "<div class=''><div class='card'>"+
+        "<div class='card-h'><div class='card-content'> <img src='images/"+business.properties.logo+"' class='img'>"+
+        "<div class='card-title-section' ><a class='link' href='"+business.properties.link+"'><b>"+business.properties.name +"</b></a>"+
+        "<p>"+ business.properties.category+"</p></div></div></div>"+
+        "<div class='card-info'>"+
+        // "<p class='item'><span></span> "+bus.phone_number+"</p>"+
+        "<p class='item'><span></span>"+business.properties.address+"</p>"+
+        "<button class='btn btn-sm btn-primary' onClick='getDirection("+directionProps+")'>Directions</button>"+
+        "<button class='btn btn-sm btn-primary ml-2'>Class Times</button></div>"+
+        "</div></div>";
+
+        var popup = new mapboxgl.Popup()
+            .setHTML(popupContent)
+            .setMaxWidth("250px");
+
+        popup.on("open", function(e){
+            console.log("Popup open");  
+            isPopupOpenEvent = true;
+
+            directionInfo.start = [];
+
+            let element = document.querySelector('.mapboxgl-popup-content');
+            element.addEventListener('click', function(e) {
+                e.stopPropagation();
+            })
+        });
+
+        let marker = new mapboxgl.Marker()
             .setLngLat(business.geometry.coordinates)
+            .setPopup(popup)
             .addTo(map);
+
     });
+
 }
 
 function createListItems(filterData) {
@@ -259,6 +291,18 @@ function flyToMarker(e) {
         .setHTML(content)
         .setMaxWidth("250px")
         .addTo(map);
+    
+    popup.on("open", function(e){
+        console.log("Popup open");  
+        isPopupOpenEvent = true;
+
+        directionInfo.start = [];
+
+        let element = document.querySelector('.mapboxgl-popup-content');
+        element.addEventListener('click', function(e) {
+            e.stopPropagation();
+        })
+    });
 
     console.log(coordinates);
 }
@@ -273,6 +317,8 @@ function getDirection(destination, address) {
     //     alert("provide user location");
     //     return;
     // }
+
+    isPopupOpenEvent = false;
 
     toggleDirectionTab();
     toggleSearchTab();
