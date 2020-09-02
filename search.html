@@ -325,6 +325,7 @@
 
         function toggleDirectionTab() {
             directionTab.classList.remove("close");
+            isDirectionTabOpen = true;
         }
 
         function toggleSearchTab() {
@@ -350,7 +351,7 @@
             map.on('click', function(e) {
                 console.log('map click');
                 // 
-                if(isPopupOpenEvent) {
+                if(!isDirectionTabOpen) {
                     return;
                 };
 

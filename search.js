@@ -42,7 +42,7 @@ function convertToGeoJson(csvData) {
 searchBar.addEventListener('input', function(e) {
     console.log(this.value);
     // close direction tabs
-    directionTab.classList.add("close");
+    // directionTab.classList.add("close");
 
     
     isFilterMode = true;
@@ -252,8 +252,6 @@ function flyToMarker(e) {
     console.log(titleElem.innerText);
 
     searchBar.value = titleElem.innerText;
-
-
     searchBar.dispatchEvent(event);
     
     map.flyTo({
@@ -261,9 +259,9 @@ function flyToMarker(e) {
         zoom:12
     });
 
-    locationMarker = new mapboxgl.Marker()
-        .setLngLat(coordinates)
-        .addTo(map);
+    // locationMarker = new mapboxgl.Marker()
+    //     .setLngLat(coordinates)
+    //     .addTo(map);
 
     let title = this.getAttribute("data-title");
     let bus = searchData.find(feature =>  feature.properties.name == title);
@@ -309,7 +307,7 @@ function flyToMarker(e) {
 
 function getDirection(destination, address) {
     // update the start with user location or start location
-    console.log(address);
+    console.log("Directions :" + isDirectionTabOpen);
     directionInfo.stop = destination.reverse();
     // if(userLocation.length > 0) {
     //     directionInfo.start = userLocation;
@@ -322,6 +320,12 @@ function getDirection(destination, address) {
 
     toggleDirectionTab();
     toggleSearchTab();
+
+    console.log("Directions :" + isDirectionTabOpen);
+
+    // update list 
+    searchBar.value = "";
+    searchBar.dispatchEvent(event);
 
     if(directionInfo.start.length == 0) {
         // alert('Kindly allow geolocation in your device or provide a starting point');
