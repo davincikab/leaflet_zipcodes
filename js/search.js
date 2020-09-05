@@ -124,7 +124,7 @@ function createMarkers(businessdata) {
         let directionProps = "["+coordinates+"],"+"\""+business.properties.address+"\"";
 
         var popupContent = "<div class=''><div class='card'>"+
-        "<div class='card-h'><div class='card-content'> <img src='images/"+business.properties.logo+"' class='img'>"+
+        "<div class='card-h'><div class='card-content'> <img src='images/"+business.properties.logo+"' class='img ml-2'>"+
         "<div class='card-title-section' ><a class='link' href='"+business.properties.link+"'><b>"+business.properties.name +"</b></a>"+
         "<p>"+ business.properties.category+"</p></div></div></div>"+
         "<div class='card-info'>"+
@@ -271,7 +271,7 @@ function flyToMarker(e) {
     let directionProps = "["+coordinates+"],"+"\""+bus.address+"\"";
     
     let content = "<div class=''><div class='card'>"+
-    "<div class='card-h'><div class='card-content'> <img src='images/"+bus.logo+"' class='img'>"+
+    "<div class='card-h'><div class='card-content'> <img src='images/"+bus.logo+"' class='img ml-2'>"+
     "<div class='card-title-section' ><a class='link' href='"+bus.link+"'><b>"+bus.name +"</b></a>"+
     "<p>"+ bus.category+"</p></div></div></div>"+
     "<div class='card-info'>"+

@@ -26,14 +26,14 @@
     </nav>
 
     <div class="container">
-        <div class="row mt-3" id="patners">
+        <div class="partners mt-3" id="partners">
          
         </div>
     </div>
    
 
     <script>
-        let patners = document.getElementById("patners");
+        let patners = document.getElementById("partners");
 
         d3.csv('data.csv')
         .then(data => {
@@ -45,7 +45,7 @@
         // 
         function createCards(data) {
             data.forEach(bus => {
-                patners.innerHTML += "<div class='col-md-4'><div class='card'>"+
+                patners.innerHTML += "<div class='card'>"+
                     "<div class='card-h'><div class='card-content'><img src='images/"+bus.logo+"' class='img'>"+
                     "<div><a class='link' href='/www."+bus.link+"'><b>"+bus.name +"</b></a>"+
                     "<p>"+ bus.category+"</p></div></div></div>"+
@@ -54,7 +54,7 @@
                     "<button class='btn btn-primary btn-sm'>Directions</button>"+
                     "<button class='btn btn-primary btn-sm'>Class Times</button></p>"+
                     "</div>"+
-                    "</div></div>";
+                    "</div>";
             });
         }
     </script>

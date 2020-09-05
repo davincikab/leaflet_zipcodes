@@ -234,6 +234,10 @@ body {
     padding-top: 1em;
 }
 
+.card-title-section p {
+    margin:0;
+}
+
 .card-info {
     padding: 0.2em 1em;
 }
