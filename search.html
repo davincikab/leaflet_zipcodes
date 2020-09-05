@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src='https://npmcdn.com/csv2geojson@latest/csv2geojson.js'></script>
-    <link rel="stylesheet" href="search.css">
     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
     <link
         rel="stylesheet"
@@ -21,7 +20,8 @@
     <!-- Promise polyfill script required to use Mapbox GL Geocoder in IE 11 -->
     <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
-    <link rel="stylesheet" href="navbar.css">    
+    <link rel="stylesheet" href="css/search.css">
+    <link rel="stylesheet" href="css/navbar.css">    
 </head>
     <body>
         <div class="container-fluid">
@@ -30,11 +30,11 @@
                     <input type="text" class="form-control" 
                         aria-label="Location" id="location-bar" placeholder="Search">
 
-                    <!-- <div class="input-group-prepend" id="toggle-direction">
+                    <div class="input-group-prepend" id="reset-button">
                         <span class="input-prepend-text">
-                            <i class="fa fa-level-down"></i>
+                            <i class="fa fa-close"></i>
                         </span>
-                    </div> -->
+                    </div>
                 </div>
 
                 <div class="geolocate" id="geolocate">
@@ -88,6 +88,7 @@
         var geolocateButton = document.getElementById('geolocate');
         var searchSection = document.getElementById("search");
         var instructions = document.getElementById('instructions');
+        var resetButtonForm = document.getElementById("reset-button")
         var isPopupOpenEvent = false;
 
         var directionInfo = {
@@ -288,12 +289,15 @@
         var logoControlSection = document.getElementsByClassName("mapboxgl-ctrl-bottom-left")[0];
         var directionTab = document.getElementById('directions');
 
+        resetButtonForm.addEventListener("click", function(e) {
+            searchBar.value = "";
+            searchBar.dispatchEvent(event);
+        });
+
         toggleButton.addEventListener('click', function(e) {
             sidetab.classList.toggle('side-tab-close');
 
             // toggleDirectionTab();
-           
-
             logoControlSection.classList.toggle('logo-open');
 
             // condition on direction tab
@@ -596,6 +600,6 @@
             cleanFilterData(filterData);
         }
     </script>
-    <script src="search.js"></script>
+    <script src="js/search.js"></script>
 </body>
 </html>

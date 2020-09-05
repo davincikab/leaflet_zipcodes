@@ -22,11 +22,11 @@ body {
 .card {
     font-size: 0.9rem;
     overflow: auto;
-    margin-bottom: 1em;
+    /* margin-bottom: 1em; */
     padding: 0em;
     border-radius: 8px;
     box-shadow: 2px 2px 0.1em #ddd;
-    height: 95%;
+    height: auto;
 }
 
 .card-content {
@@ -46,7 +46,7 @@ body {
     padding: 0.2em 0.5em;
     /* margin: 0.2em 0.8em; */
     background-color: var(--gray);
-    height: 55%;
+    height: auto
 }
 
 .card-h > p {
@@ -67,6 +67,13 @@ body {
     font-weight: 600;
 }
 
+.item:first-child {
+    margin-bottom: 0.1em;
+}
+.item:last-child {
+    /* position: absolute; */
+    /* bottom: 0; */
+}
 
 .item .btn {
     /* background-color: #7c6a88af; */

@@ -82,7 +82,7 @@ body {
 .input-group .input-group-prepend {
     display: flex;
     align-items: center;
-    background-color: #ddd;
+    background-color: #fff;
     padding: 0em 0.5em;
     border-top-right-radius: 16px;
     border-bottom-right-radius: 16px;
