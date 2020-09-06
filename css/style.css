@@ -51,7 +51,7 @@ body {
     height: 100vh;
     position: fixed;
     z-index: 0;
-    background-image: url(images/bg-imge.png);
+    background-image: url(../images/bg-imge.png);
     background-size: cover;
     background-position: center;
 }
