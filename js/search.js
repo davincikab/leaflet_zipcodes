@@ -130,7 +130,7 @@ function createMarkers(businessdata) {
         "<div class='card-info'>"+
         // "<p class='item'><span></span> "+bus.phone_number+"</p>"+
         "<p class='item'><span></span>"+business.properties.address+"</p>"+
-        "<button class='btn btn-sm btn-primary' onClick='getDirection("+directionProps+")'>Directions</button>"+
+        "<button class='btn btn-sm btn-primary' id='direction-btn' onclick='getDirection("+directionProps+")'>Directions</button>"+
         "<a class='btn btn-sm btn-primary ml-2' href='class_times.html'>Class Times</a></div>"+
         "</div></div>";
 
@@ -147,7 +147,14 @@ function createMarkers(businessdata) {
             let element = document.querySelector('.mapboxgl-popup-content');
             element.addEventListener('click', function(e) {
                 e.stopPropagation();
-            })
+            });
+
+            // get the 
+            let directionButton = document.getElementById("direction-btn");
+            directionButton.addEventListener("click", function(e) {
+                console.log(e);
+                getDirection(coordinates, business.properties.address);
+            });
         });
 
         let marker = new mapboxgl.Marker()
@@ -268,7 +275,7 @@ function flyToMarker(e) {
 
     console.log(bus);
     bus = bus.properties;
-    let directionProps = "["+coordinates+"],"+"\""+bus.address+"\"";
+    let directionProps = "["+coordinates+"],"+"\'"+bus.address+"\'";
     
     let content = "<div class=''><div class='card'>"+
     "<div class='card-h'><div class='card-content'> <img src='images/"+bus.logo+"' class='img ml-2'>"+
@@ -277,20 +284,28 @@ function flyToMarker(e) {
     "<div class='card-info'>"+
     // "<p class='item'><span></span> "+bus.phone_number+"</p>"+
     "<p class='item'><span></span>"+bus.address+"</p>"+
-    "<button class='btn btn-sm btn-primary' onClick='getDirection("+directionProps+")'>Directions</button>"+
+    "<button class='btn btn-sm btn-primary' id='direction-btn'>Directions</button>"+
     "<a class='btn btn-sm btn-primary ml-2' href='class_times.html'>Class Times</a></div>"+
     "</div></div>";
 
     // open popup
-    if(isMainPage) {
-        return ;
-    }
-    popup.setLngLat(coordinates)
+    let poPup = new mapboxgl.Popup();
+    poPup.setLngLat(coordinates)
         .setHTML(content)
         .setMaxWidth("250px")
         .addTo(map);
     
-    popup.on("open", function(e){
+
+    console.log(poPup);
+
+     // get the 
+     let directionButton = document.getElementById("direction-btn");
+     directionButton.addEventListener("click", function(e) {
+         console.log(e);
+         getDirection(coordinates, bus.address);
+     });
+
+    poPup.on("open", function(){
         console.log("Popup open");  
         isPopupOpenEvent = true;
 
@@ -299,7 +314,14 @@ function flyToMarker(e) {
         let element = document.querySelector('.mapboxgl-popup-content');
         element.addEventListener('click', function(e) {
             e.stopPropagation();
-        })
+        });
+
+        // get the 
+        let directionButton = document.getElementById("direction-btn");
+        directionButton.addEventListener("click", function(e) {
+            console.log(e);
+            getDirection(coordinates, business.properties.address);
+        });
     });
 
     console.log(coordinates);
