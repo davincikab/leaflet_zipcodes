@@ -51,10 +51,29 @@
                     "<p>"+ bus.category+"</p></div></div></div>"+
                     "<div class='card-info'><p class='item'><span></span>"+bus.address+"</p>"+
                     "<p class='item'>"+
-                    "<button class='btn btn-primary btn-sm'>Directions</button>"+
+                    "<button class='btn btn-primary btn-sm btn-direction' data-name='"+bus.name+"' data-coord='"+
+                        bus.lng +","+ bus.lat +
+                        "' data-address='"+bus.address + "'" +
+                    "'>Directions</button>"+
                     "<button class='btn btn-primary btn-sm'>Class Times</button></p>"+
                     "</div>"+
                     "</div>";
+
+                // add event listener
+            });
+
+            // add eventListenerr
+
+            var directionBtns = document.querySelectorAll(".btn-direction");
+            directionBtns.forEach(btn => {
+                btn.addEventListener("click", function() {
+                    // get the business name
+                    let coordinates = btn.getAttribute("data-coord");
+                    let address = btn.getAttribute("data-address");
+
+                    window.location.assign("search.html?address=" + address + "&coordinates=" + coordinates);
+                });
+                
             });
         }
     </script>

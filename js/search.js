@@ -5,7 +5,7 @@ var filterData;
 var isFilterMode = false;
 var searchData;
 var locationMarker;
-var popup = new mapboxgl.Popup({anchor:"top", closeOnMove:false, closeOnClick:false})
+var currentPopup = new mapboxgl.Popup({anchor:"top", closeOnMove:false, closeOnClick:true});
 
 // load data
 function loadCitiesData() {
@@ -131,7 +131,7 @@ function createMarkers(businessdata) {
         // "<p class='item'><span></span> "+bus.phone_number+"</p>"+
         "<p class='item'><span></span>"+business.properties.address+"</p>"+
         "<button class='btn btn-sm btn-primary' id='direction-btn' onclick='getDirection("+directionProps+")'>Directions</button>"+
-        "<a class='btn btn-sm btn-primary ml-2' href='class_times.html'>Class Times</a></div>"+
+        "<a class='btn btn-sm btn-primary ml-2' href='https://msgsndr.com/widget/booking/xweYFM6ZfzlWbZMfvtWG )'>Class Times</a></div>"+
         "</div></div>";
 
         var popup = new mapboxgl.Popup()
@@ -140,6 +140,13 @@ function createMarkers(businessdata) {
 
         popup.on("open", function(e){
             console.log("Popup open");  
+
+            if(currentPopup.isOpen()) {
+                currentPopup.remove();
+            }
+
+            currentPopup = popup;
+
             isPopupOpenEvent = true;
 
             directionInfo.start = [];
@@ -285,44 +292,39 @@ function flyToMarker(e) {
     // "<p class='item'><span></span> "+bus.phone_number+"</p>"+
     "<p class='item'><span></span>"+bus.address+"</p>"+
     "<button class='btn btn-sm btn-primary' id='direction-btn'>Directions</button>"+
-    "<a class='btn btn-sm btn-primary ml-2' href='class_times.html'>Class Times</a></div>"+
+    "<a class='btn btn-sm btn-primary ml-2' href='https://msgsndr.com/widget/booking/xweYFM6ZfzlWbZMfvtWG'>Class Times</a></div>"+
     "</div></div>";
 
     // open popup
-    let poPup = new mapboxgl.Popup();
-    poPup.setLngLat(coordinates)
+    currentPopup.setLngLat(coordinates)
         .setHTML(content)
         .setMaxWidth("250px")
         .addTo(map);
     
-
-    console.log(poPup);
-
-     // get the 
-     let directionButton = document.getElementById("direction-btn");
-     directionButton.addEventListener("click", function(e) {
-         console.log(e);
-         getDirection(coordinates, bus.address);
-     });
-
-    poPup.on("open", function(){
+    if(currentPopup.isOpen()) {
         console.log("Popup open");  
-        isPopupOpenEvent = true;
-
-        directionInfo.start = [];
-
-        let element = document.querySelector('.mapboxgl-popup-content');
-        element.addEventListener('click', function(e) {
-            e.stopPropagation();
-        });
-
         // get the 
         let directionButton = document.getElementById("direction-btn");
         directionButton.addEventListener("click", function(e) {
             console.log(e);
-            getDirection(coordinates, business.properties.address);
+            getDirection(coordinates, bus.address);
         });
-    });
+    }
+
+     // get the 
+    // currentPopup.on("open", function(){
+    //     console.log("Popup open");  
+    //     isPopupOpenEvent = true;
+
+    //     directionInfo.start = [];
+
+    //     // get the 
+    //     let directionButton = document.getElementById("direction-btn");
+    //     directionButton.addEventListener("click", function(e) {
+    //         console.log(e);
+    //         getDirection(coordinates, bus.address);
+    //     });
+    // });
 
     console.log(coordinates);
 }
@@ -396,6 +398,7 @@ map.on("load", function(e) {
     map.addControl(new LogoControl(), "bottom-left");
 
     // create
+    getDirectionsFromUrl();
 });
 
 
@@ -411,3 +414,27 @@ window.onresize = function(e) {
 
 var event = document.createEvent('Event');
 event.initEvent('input', true, true);
+
+// get the page url
+let windowLocation = window.location;
+
+// directions
+function getDirectionsFromUrl() {
+    if(windowLocation.search) {
+        // toggle direction tab
+        toggleDirectionTab();
+    
+        let query = windowLocation.search.slice(1).split('&');
+    
+        let result = {};
+         // get the name
+         query.forEach(qry => {
+            let path = qry.split("=");
+            result[path[0]] = decodeURIComponent(path[1] || "");
+         });
+    
+         result.coordinates = result.coordinates.split(',').map(el => parseFloat(el));
+    
+        getDirection(result.coordinates, result.address);
+    }
+}

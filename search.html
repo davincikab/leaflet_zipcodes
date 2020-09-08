@@ -236,7 +236,7 @@
                 }
 
             // close the pop
-            popup.remove();
+            currentPopup.remove();
 
             // zoom to street layer
             if(geojson.geometry.coordinates.length != 0) {
@@ -297,7 +297,7 @@
         toggleButton.addEventListener('click', function(e) {
             sidetab.classList.toggle('side-tab-close');
 
-            // toggleDirectionTab();
+            // toggleDirectionTab()
             logoControlSection.classList.toggle('logo-open');
 
             // condition on direction tab
@@ -318,6 +318,13 @@
             updateRoute([]);
             updateStartLayer([]);
             updateDestinationLayer([]);
+            directionInfo.start = [];
+
+            geocoderOne.clear();
+            geocoderTwo.clear();
+
+
+            window.location.assign(window.location.origin + window.location.pathname);
         });
 
         // openDirection.addEventListener('click', function(e) {
