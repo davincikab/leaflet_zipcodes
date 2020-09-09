@@ -384,7 +384,10 @@ class LogoControl {
         this._map = map;
         this._container = document.createElement('div');
         this._container.className = 'mapboxgl-ctrl';
-        this._container.innerHTML = "<a class='' href='/index.html'><img src='images/gsn.logostamp_blue.png' class='img'></a>";
+        this._container.innerHTML = "<a class='' href='/index.html'><img src='images/gsn.logostamp_blue.png' class='img'></a>"+
+        "<button class='btn btn-sm btn-outline-primary' id='reset-btn'>Reset</button>";
+
+
         return this._container;
     }
     
@@ -397,6 +400,11 @@ class LogoControl {
 map.on("load", function(e) {
     map.addControl(new LogoControl(), "bottom-left");
 
+    let resetBtn = document.getElementById("reset-btn");
+    resetBtn.addEventListener("click", function(e) { 
+        searchBar.value = "";
+        searchBar.dispatchEvent(event);
+    });
     // create
     getDirectionsFromUrl();
 });
