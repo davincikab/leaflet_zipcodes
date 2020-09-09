@@ -307,12 +307,12 @@ body {
 
 
 .input-group .mapboxgl-ctrl-geocoder{
-    padding: 8px;
+    /* padding: 8px; */
     font-size: 0.8rem;
 }
 
 .mapboxgl-ctrl-geocoder .mapboxgl-ctrl-geocoder--input {
-    height: 20px;
+    /* height: 20px; */
 }
 
 .close-btn {
