@@ -340,7 +340,7 @@ function getDirection(destination, address) {
         platform.indexOf("iPod") != -1 ||
         platform.indexOf("iPad") != -1
     ) {
-        url = "maps://www.google.com/maps/dir/?api=1&destination="+ address;
+        url = "https://www.google.com/maps/dir/?api=1&destination="+ address;
     }
     else {
         url = "https://www.google.com/maps/dir/?api=1&destination="+ address;
