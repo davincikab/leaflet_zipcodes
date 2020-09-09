@@ -56,6 +56,12 @@
                 <span class="close-btn" id="close-btn">
                     <i class="fa fa-times"></i>
                 </span>
+
+                <!-- Directions -->
+                <div class="direction-links my-2">
+                    <a href="#" class="btn btn-sm btn-primary" id="direction-link">Google Directions</a>
+                </div>
+                
                 <!-- Current location -->
                 <div class="input-tab">
                     <div class="input-group mb-2" id="start">        
@@ -324,7 +330,10 @@
             geocoderTwo.clear();
 
 
-            window.location.assign(window.location.origin + window.location.pathname);
+            if(window.location.search) {
+                window.location.assign(window.location.origin + window.location.pathname);
+            }
+            
         });
 
         // openDirection.addEventListener('click', function(e) {

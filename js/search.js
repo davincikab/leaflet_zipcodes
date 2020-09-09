@@ -6,6 +6,7 @@ var isFilterMode = false;
 var searchData;
 var locationMarker;
 var currentPopup = new mapboxgl.Popup({anchor:"top", closeOnMove:false, closeOnClick:true});
+var directionLink = document.getElementById("direction-link");
 
 // load data
 function loadCitiesData() {
@@ -84,7 +85,7 @@ function forwardGeocoder(query) {
 }
 
 function cleanFilterData(data) {
-    if(data.length == 0 && !isMainPage) {
+    if(!data || data.length == 0) {
         sideSection.forEach(sd => {
             let st = getComputedStyle(sd);
 
@@ -134,7 +135,7 @@ function createMarkers(businessdata) {
         "<a class='btn btn-sm btn-primary ml-2' href='https://msgsndr.com/widget/booking/xweYFM6ZfzlWbZMfvtWG )'>Class Times</a></div>"+
         "</div></div>";
 
-        var popup = new mapboxgl.Popup()
+        let popup = new mapboxgl.Popup()
             .setHTML(popupContent)
             .setMaxWidth("250px");
 
@@ -144,8 +145,6 @@ function createMarkers(businessdata) {
             if(currentPopup.isOpen()) {
                 currentPopup.remove();
             }
-
-            currentPopup = popup;
 
             isPopupOpenEvent = true;
 
@@ -162,6 +161,8 @@ function createMarkers(businessdata) {
                 console.log(e);
                 getDirection(coordinates, business.properties.address);
             });
+
+            currentPopup = popup;
         });
 
         let marker = new mapboxgl.Marker()
@@ -296,6 +297,7 @@ function flyToMarker(e) {
     "</div></div>";
 
     // open popup
+    currentPopup.remove();
     currentPopup.setLngLat(coordinates)
         .setHTML(content)
         .setMaxWidth("250px")
@@ -330,16 +332,25 @@ function flyToMarker(e) {
 }
 
 function getDirection(destination, address) {
+    // update the directions link
+    let platform = navigator.platform;
+    let url;
+
+    if(platform.indexOf("iPhone") != -1 ||
+        platform.indexOf("iPod") != -1 ||
+        platform.indexOf("iPad") != -1
+    ) {
+        url = "maps://www.google.com/maps/dir/?api=1&destination="+ address;
+    }
+    else {
+        url = "https://www.google.com/maps/dir/?api=1&destination="+ address;
+    }
+
+    directionLink.setAttribute("href", url);
+
     // update the start with user location or start location
     console.log("Directions :" + isDirectionTabOpen);
     directionInfo.stop = destination.reverse();
-    // if(userLocation.length > 0) {
-    //     directionInfo.start = userLocation;
-    // } else {
-    //     alert("provide user location");
-    //     return;
-    // }
-
     isPopupOpenEvent = false;
 
     toggleDirectionTab();
@@ -385,7 +396,7 @@ class LogoControl {
         this._container = document.createElement('div');
         this._container.className = 'mapboxgl-ctrl';
         this._container.innerHTML = "<a class='' href='/index.html'><img src='images/gsn.logostamp_blue.png' class='img'></a>"+
-        "<button class='btn btn-sm btn-outline-primary' id='reset-btn'>Reset</button>";
+        "<button class='btn btn-sm btn-primary' id='reset-btn'>Reset</button>";
 
 
         return this._container;
@@ -404,6 +415,13 @@ map.on("load", function(e) {
     resetBtn.addEventListener("click", function(e) { 
         searchBar.value = "";
         searchBar.dispatchEvent(event);
+
+        directionTab.classList.add("close");
+        toggleSearchTab();
+        updateDestinationLayer([]);
+        updateStartLayer([]);
+
+        isDirectionTabOpen = false;
     });
     // create
     getDirectionsFromUrl();
