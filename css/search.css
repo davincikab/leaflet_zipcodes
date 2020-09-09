@@ -311,10 +311,6 @@ body {
     font-size: 0.8rem;
 }
 
-.mapboxgl-ctrl-geocoder .mapboxgl-ctrl-geocoder--input {
-    /* height: 20px; */
-}
-
 .close-btn {
     position: absolute;
     top:2%;
