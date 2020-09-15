@@ -338,7 +338,7 @@ function getDirection(destination, address) {
 
     if(platform.indexOf("iPhone") != -1 ||
         platform.indexOf("iPod") != -1 ||
-        platform.indexOf("iPad") != -1
+        platform.indexOf("iPad") != -1  
     ) {
         url = "https://www.google.com/maps/dir/?api=1&destination="+ address;
     }
