@@ -142,7 +142,7 @@ function createMarkers(businessdata) {
         popup.on("open", function(e){
             console.log("Popup open");  
 
-            if(currentPopup.isOpen()) {
+            if(currentPopup.isOpen() && currentPopup != popup) {
                 currentPopup.remove();
             }
 
@@ -160,9 +160,19 @@ function createMarkers(businessdata) {
             directionButton.addEventListener("click", function(e) {
                 console.log(e);
                 getDirection(coordinates, business.properties.address);
+
+                // update the class times link
+                classLink.setAttribute("href", "https://msgsndr.com/widget/booking/xweYFM6ZfzlWbZMfvtWG");
             });
 
             currentPopup = popup;
+        });
+
+        popup.on("close", function(e) {
+            console.log("Popup closed");
+            if(currentPopup == popup) {
+                console.log("True");
+            }
         });
 
         let marker = new mapboxgl.Marker()
@@ -310,6 +320,9 @@ function flyToMarker(e) {
         directionButton.addEventListener("click", function(e) {
             console.log(e);
             getDirection(coordinates, bus.address);
+
+             // update the class times link
+             classLink.setAttribute("href", "https://msgsndr.com/widget/booking/xweYFM6ZfzlWbZMfvtWG");
         });
     }
 
@@ -417,7 +430,8 @@ map.on("load", function(e) {
         searchBar.dispatchEvent(event);
 
         directionTab.classList.add("close");
-        toggleSearchTab();
+        searchSection.classList.remove("close");
+        // toggleSearchTab();
         updateDestinationLayer([]);
         updateStartLayer([]);
 
@@ -460,7 +474,15 @@ function getDirectionsFromUrl() {
          });
     
          result.coordinates = result.coordinates.split(',').map(el => parseFloat(el));
+
+        // add a
     
         getDirection(result.coordinates, result.address);
+
+         // update the class times link
+         classLink.setAttribute("href", result.link);
     }
 }
+
+
+// TODO: marker click bug, directions scroll

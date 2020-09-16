@@ -57,9 +57,14 @@
                     <i class="fa fa-times"></i>
                 </span>
 
+                <span class="expand-btn" id="expand-btn">
+                    <i class="fa fa-chevron-up"></i>
+                </span>
+
                 <!-- Directions -->
-                <div class="direction-links my-2">
+                <div class="direction-links mt-4 mb-2">
                     <a href="#" class="btn btn-sm btn-primary" id="direction-link">Google Directions</a>
+                    <a href="https://msgsndr.com/widget/booking/xweYFM6ZfzlWbZMfvtWG" class="btn btn-sm btn-primary" id="class-link">Class times</a>
                 </div>
                 
                 <!-- Current location -->
@@ -94,7 +99,10 @@
         var geolocateButton = document.getElementById('geolocate');
         var searchSection = document.getElementById("search");
         var instructions = document.getElementById('instructions');
-        var resetButtonForm = document.getElementById("reset-button")
+        var resetButtonForm = document.getElementById("reset-button");
+        var expandButton = document.getElementById("expand-btn");
+        var expandIcon = document.querySelector(".expand-btn i");
+        var classLink = document.getElementById("class-link");
         var isPopupOpenEvent = false;
 
         var directionInfo = {
@@ -329,12 +337,37 @@
             geocoderOne.clear();
             geocoderTwo.clear();
 
+            if(directionTab.classList.contains("expand")) {
+                expandDirectionTab();
+            }
+            
+
 
             if(window.location.search) {
                 window.location.assign(window.location.origin + window.location.pathname);
             }
             
         });
+
+        expandButton.addEventListener("click", function(e) {
+            expandDirectionTab();
+        });
+
+        function expandDirectionTab() {
+            if(directionTab.classList.contains("expand")) {
+                // collapse the tab
+                directionTab.classList.remove("expand");
+                instructions.classList.remove("expand");
+                expandIcon.classList.add("fa-chevron-up");
+                expandIcon.classList.remove("fa-chevron-down");
+            } else {
+                // expand the tab
+                directionTab.classList.add("expand");
+                instructions.classList.add("expand");
+                expandIcon.classList.add("fa-chevron-down");
+                expandIcon.classList.remove("fa-chevron-up");
+            }
+        }
 
         // openDirection.addEventListener('click', function(e) {
         //    toggleSearchTab();
