@@ -432,10 +432,22 @@ map.on("load", function(e) {
         directionTab.classList.add("close");
         searchSection.classList.remove("close");
         // toggleSearchTab();
+
         updateDestinationLayer([]);
         updateStartLayer([]);
 
         isDirectionTabOpen = false;
+
+        var geojson = {
+            'type': 'Feature',
+            'properties': {},
+            'geometry': {
+                'type': 'LineString',
+                    'coordinates': []
+            }
+        };
+
+        addRoute(geojson);   
     });
     // create
     getDirectionsFromUrl();

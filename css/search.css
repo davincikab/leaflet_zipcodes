@@ -290,7 +290,7 @@ body {
 
 .directions {
     position: absolute;
-    top: 45%;
+    top: 55%;
     width: 100%;
     background-color: var(--gray-2);
     z-index: 3;
