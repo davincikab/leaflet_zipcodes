@@ -299,6 +299,7 @@ body {
     padding: 0.4em 0.6em;
     cursor: pointer;
     transition: transform .25s cubic-bezier(.6,.1,.27,1.02),-webkit-transform .25s cubic-bezier(.6,.1,.27,1.02);
+    bottom: 0;
 }
 
 .directions.close {
@@ -317,7 +318,7 @@ body {
 
 .close-btn {
     position: absolute;
-    top:2%;
+    top:0%;
     right:2%;
 }
 
@@ -341,14 +342,14 @@ body {
 
 .instructions {
     padding: 0.3em 1em;
-    height: 25vh;
-    margin-top: 1.1em;
+    height: 26vh;
+    /* margin-top: 1.1em; */
     font-size: 0.9rem;
     color: var(--black);
 }
 
 .instructions.expand {
-    height: 72vh;
+    height: 68vh;
 }
 
 #start {
