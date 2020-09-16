@@ -298,7 +298,7 @@ body {
     left: 0%;
     padding: 0.4em 0.6em;
     cursor: pointer;
-    transition: transform .25s cubic-bezier(.6,.1,.27,1.02),-webkit-transform .25s cubic-bezier(.6,.1,.27,1.02);
+    transition: top 0.3s, transform .25s cubic-bezier(.6,.1,.27,1.02),-webkit-transform .25s cubic-bezier(.6,.1,.27,1.02);
     bottom: 0;
 }
 
